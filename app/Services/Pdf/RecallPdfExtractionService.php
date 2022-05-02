@@ -23,6 +23,26 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
         return $this->parsePdf($lines);
     }
 
+    public function getPackageIdsFromPdfFile(string $filename): array
+    {
+        $pdfText = $this->parserService->getPdfTextFromFile($filename);
+        $lines = explode("\n", $pdfText);
+
+        return $this->parsePackagesFromPdf($lines);
+    }
+
+    protected function parsePackagesFromPdf(array $lines): array
+    {
+        $packages = [];
+        foreach ($lines as $line) {
+            if ($package = $this->isPackageBlock($line)) {
+                $packages[] = $package;
+            }
+        }
+
+        return $packages;
+    }
+
     protected function parsePdf(array $lines): array
     {
         $recalls = [];

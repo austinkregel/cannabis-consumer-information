@@ -30,6 +30,6 @@ Artisan::command('test', function () {
 Artisan::command('test2', function () {
     /** @var \App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract $s */
     $s = app(\App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract::class);
-    $x = $s->getRecallsFromPdfFile('./pdf.pdf');
+    $x = $s->getPackageIdsFromPdfFile('./pdf.pdf');
     dd($x);
 });
