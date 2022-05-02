@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Contracts\Services\Pdf\PdfParserServiceContract;
+use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
+use App\Services\Pdf\PdfParserService;
+use App\Services\Pdf\RecallPdfExtractionService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(PdfParserServiceContract::class, PdfParserService::class);
+
+        $this->app->bind(RecallPdfExtractionServiceContract::class, RecallPdfExtractionService::class);
     }
 
     /**
