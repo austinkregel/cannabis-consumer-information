@@ -57,7 +57,7 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
                 $recalls[$currentStore][$currentPackage] = '';
             }
 
-            $recalls[$currentStore][$currentPackage] .= ' ' . str_replace(array_keys($recalls), '', trim($line, "\t\r\n "));
+            $recalls[$currentStore][$currentPackage] .= ' ' . str_replace(array_keys($recalls), '', $this->trim($line));
         }
 
         /**
@@ -68,7 +68,7 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
         $stores = array_keys($recalls);
         foreach ($recalls as $store => $packages) {
             foreach ($packages as $package => $recallInfo) {
-                $recalls[$store][$package] = trim(str_replace($stores, '', $recallInfo), "\t\r\n ");
+                $recalls[$store][$package] = $this->trim(str_replace($stores, '', $recallInfo));
             }
         }
         return $recalls;
@@ -79,7 +79,7 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
         $storeNameRegex = '/This recall affects.*from ([a-zA-Z0-9\-_ &]*).*/i';
         preg_match_all($storeNameRegex, $line, $matches);
         if (!empty($matches[1])) {
-            return trim($matches[1][0], "\t\r\n ");
+            return $this->trim($matches[1][0]);
         }
 
         return null;
@@ -90,9 +90,14 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
         $packageRegex = '/[Package]? ?#? ?(1A[A-Z0-9]*)/i';
         preg_match_all($packageRegex, $line, $matches);
         if (!empty($matches[1])) {
-            return trim($matches[1][0], "\t\r\n ");
+            return $this->trim($matches[1][0]);
         }
 
         return null;
+    }
+
+    protected function trim(string $value): string
+    {
+        return trim($value, "\t\r\n ");
     }
 }
