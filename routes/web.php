@@ -16,3 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('/recall', function () {
+    return view('recall');
+})->middleware(['auth'])->name('recall');
+
+Route::post('/recall-check', function () {
+
+    return 'hello world';
+})->middleware(['auth'])->name('recall-check');
+
+require __DIR__.'/auth.php';
