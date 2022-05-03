@@ -9,11 +9,8 @@ use Smalot\PdfParser\Parser;
 
 class PdfParserService implements PdfParserServiceContract
 {
-    protected Parser $parser;
-
-    public function __construct(Parser $parser)
+    public function __construct(protected PdfReaderService $parser)
     {
-        $this->parser = $parser;
     }
 
     public function getPdfTextFromFile(string $filename): string

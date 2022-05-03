@@ -1538,16 +1538,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v13.9.0",
+            "version": "v13.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier-stripe.git",
-                "reference": "d1ed7cb499b653214773f0de9197c292d49f1e1c"
+                "reference": "e46f67f3fa5f3693c25f4e59e6c21f2d4b09e4e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/d1ed7cb499b653214773f0de9197c292d49f1e1c",
-                "reference": "d1ed7cb499b653214773f0de9197c292d49f1e1c",
+                "url": "https://api.github.com/repos/laravel/cashier-stripe/zipball/e46f67f3fa5f3693c25f4e59e6c21f2d4b09e4e8",
+                "reference": "e46f67f3fa5f3693c25f4e59e6c21f2d4b09e4e8",
                 "shasum": ""
             },
             "require": {
@@ -1614,7 +1614,7 @@
                 "issues": "https://github.com/laravel/cashier/issues",
                 "source": "https://github.com/laravel/cashier"
             },
-            "time": "2022-04-27T13:17:23+00:00"
+            "time": "2022-05-03T15:47:59+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -1681,16 +1681,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v9.10.1",
+            "version": "v9.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "93414b1c7c0a56081d96c060bb850ac192d3d323"
+                "reference": "598a8c84d452a66b90a3213b1d67189cc726c728"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/93414b1c7c0a56081d96c060bb850ac192d3d323",
-                "reference": "93414b1c7c0a56081d96c060bb850ac192d3d323",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/598a8c84d452a66b90a3213b1d67189cc726c728",
+                "reference": "598a8c84d452a66b90a3213b1d67189cc726c728",
                 "shasum": ""
             },
             "require": {
@@ -1856,7 +1856,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-04-28T13:18:25+00:00"
+            "time": "2022-05-03T14:47:20+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -1984,23 +1984,23 @@
         },
         {
             "name": "laravel/spark-stripe",
-            "version": "v2.0.1",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/spark-stripe.git",
-                "reference": "c1ce98402e9e4c749a13c603cfef8b82298c7816"
+                "reference": "e3cd24529f757d1c8af8f6b652e4369b6d7137a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://spark.laravel.com/dist/laravel/spark-stripe/laravel-spark-stripe-c1ce98402e9e4c749a13c603cfef8b82298c7816-zip-73b6a7.zip",
-                "reference": "c1ce98402e9e4c749a13c603cfef8b82298c7816",
-                "shasum": "5b11324cddb8db5347e37efaadc0ef1b2901a565"
+                "url": "https://spark.laravel.com/dist/laravel/spark-stripe/laravel-spark-stripe-e3cd24529f757d1c8af8f6b652e4369b6d7137a8-zip-8ccf0c.zip",
+                "reference": "e3cd24529f757d1c8af8f6b652e4369b6d7137a8",
+                "shasum": "f8a1be96be41b6d52ebe29d0072b70ffd1ad7266"
             },
             "require": {
                 "ext-json": "*",
                 "illuminate/contracts": "^9.0",
                 "inertiajs/inertia-laravel": "^0.5.1",
-                "laravel/cashier": "^13.8.5",
+                "laravel/cashier": "^13.9",
                 "mpociot/vat-calculator": "^3.0",
                 "php": "^8.0"
             },
@@ -2053,10 +2053,10 @@
                 "stripe"
             ],
             "support": {
-                "source": "https://github.com/laravel/spark-stripe/tree/v2.0.1",
+                "source": "https://github.com/laravel/spark-stripe/tree/v2.1.0",
                 "issues": "https://github.com/laravel/spark-stripe/issues"
             },
-            "time": "2022-04-15T13:25:57+00:00"
+            "time": "2022-05-03T10:48:42+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -2316,16 +2316,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.0.18",
+            "version": "3.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "c8e137e594948240b03372e012344b07c61b9193"
+                "reference": "670df21225d68d165a8df38587ac3f41caf608f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c8e137e594948240b03372e012344b07c61b9193",
-                "reference": "c8e137e594948240b03372e012344b07c61b9193",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/670df21225d68d165a8df38587ac3f41caf608f8",
+                "reference": "670df21225d68d165a8df38587ac3f41caf608f8",
                 "shasum": ""
             },
             "require": {
@@ -2386,7 +2386,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.0.18"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.0.19"
             },
             "funding": [
                 {
@@ -2402,7 +2402,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-25T18:55:04+00:00"
+            "time": "2022-05-03T21:19:02+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -2730,16 +2730,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.57.0",
+            "version": "2.58.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "4a54375c21eea4811dbd1149fe6b246517554e78"
+                "reference": "97a34af22bde8d0ac20ab34b29d7bfe360902055"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/4a54375c21eea4811dbd1149fe6b246517554e78",
-                "reference": "4a54375c21eea4811dbd1149fe6b246517554e78",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/97a34af22bde8d0ac20ab34b29d7bfe360902055",
+                "reference": "97a34af22bde8d0ac20ab34b29d7bfe360902055",
                 "shasum": ""
             },
             "require": {
@@ -2757,7 +2757,8 @@
                 "phpmd/phpmd": "^2.9",
                 "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "^0.12.54 || ^1.0",
-                "phpunit/phpunit": "^7.5.20 || ^8.5.14",
+                "phpunit/php-file-iterator": "^2.0.5",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.23",
                 "squizlabs/php_codesniffer": "^3.4"
             },
             "bin": [
@@ -2822,7 +2823,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-13T18:13:33+00:00"
+            "time": "2022-04-25T19:31:17+00:00"
         },
         {
             "name": "nette/schema",
@@ -4070,16 +4071,16 @@
         },
         {
             "name": "smalot/pdfparser",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "193515a64fb979aff1786b09d5960797db2f3b0a"
+                "reference": "7c007090776f29119e72be28f7780e638ea0cbf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/193515a64fb979aff1786b09d5960797db2f3b0a",
-                "reference": "193515a64fb979aff1786b09d5960797db2f3b0a",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/7c007090776f29119e72be28f7780e638ea0cbf4",
+                "reference": "7c007090776f29119e72be28f7780e638ea0cbf4",
                 "shasum": ""
             },
             "require": {
@@ -4115,22 +4116,22 @@
             ],
             "support": {
                 "issues": "https://github.com/smalot/pdfparser/issues",
-                "source": "https://github.com/smalot/pdfparser/tree/v2.2.0"
+                "source": "https://github.com/smalot/pdfparser/tree/v2.2.1"
             },
-            "time": "2022-04-04T10:25:03+00:00"
+            "time": "2022-05-02T06:42:03+00:00"
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.125.0",
+            "version": "v7.126.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "822c00aa380c10c2a3c55d105c5da72ad577b7c4"
+                "reference": "c36de62a89475e81d9c75ec08de19376466f67b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/822c00aa380c10c2a3c55d105c5da72ad577b7c4",
-                "reference": "822c00aa380c10c2a3c55d105c5da72ad577b7c4",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c36de62a89475e81d9c75ec08de19376466f67b7",
+                "reference": "c36de62a89475e81d9c75ec08de19376466f67b7",
                 "shasum": ""
             },
             "require": {
@@ -4175,9 +4176,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v7.125.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v7.126.0"
             },
-            "time": "2022-04-21T22:31:37+00:00"
+            "time": "2022-05-03T15:37:27+00:00"
         },
         {
             "name": "symfony/console",
@@ -6936,16 +6937,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.14.0",
+            "version": "v1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "453c66fde4109eb49e12299ffe3bf0d667983447"
+                "reference": "9a7348dedfccc894718a21f71c09d669747e3f33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/453c66fde4109eb49e12299ffe3bf0d667983447",
-                "reference": "453c66fde4109eb49e12299ffe3bf0d667983447",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/9a7348dedfccc894718a21f71c09d669747e3f33",
+                "reference": "9a7348dedfccc894718a21f71c09d669747e3f33",
                 "shasum": ""
             },
             "require": {
@@ -6992,7 +6993,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2022-04-27T13:10:22+00:00"
+            "time": "2022-05-02T13:58:40+00:00"
         },
         {
             "name": "mockery/mockery",
