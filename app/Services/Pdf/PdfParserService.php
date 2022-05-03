@@ -5,13 +5,12 @@ namespace App\Services\Pdf;
 
 use App\Contracts\Services\Pdf\PdfParserServiceContract;
 use Smalot\PdfParser\Document;
-use Smalot\PdfParser\Parser;
 
 class PdfParserService implements PdfParserServiceContract
 {
-    protected Parser $parser;
+    protected PdfReaderService $parser;
 
-    public function __construct(Parser $parser)
+    public function __construct(PdfReaderService $parser)
     {
         $this->parser = $parser;
     }
