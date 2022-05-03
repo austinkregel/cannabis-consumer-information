@@ -2,14 +2,20 @@
 
 namespace App\Providers;
 
-use App\Contracts\Services\Pdf\PdfParserServiceContract;
-use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
-use App\Services\Pdf\PdfParserService;
-use App\Services\Pdf\RecallPdfExtractionService;
+use App\Services;
+use App\Contracts;
+use App\Repositories;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $bindings = [
+        Contracts\Services\Pdf\PdfParserServiceContract::class => Services\Pdf\PdfParserService::class,
+        Contracts\Services\Pdf\RecallPdfExtractionServiceContract::class => Services\Pdf\RecallPdfExtractionService::class,
+        Contracts\Services\Crawler\CrawlerContract::class => Services\Crawler\PdfCrawler::class,
+        Contracts\Repositories\SystemUserRepositoryContract::class => Repositories\SystemUserRepository::class,
+    ];
+
     /**
      * Register any application services.
      *
@@ -17,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(PdfParserServiceContract::class, PdfParserService::class);
-
-        $this->app->bind(RecallPdfExtractionServiceContract::class, RecallPdfExtractionService::class);
+        foreach ($this->bindings as $contract => $binding) {
+            $this->app->bind($contract, $binding);
+        }
     }
 
     /**
