@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/spark-stripe": "^2.0",
         "laravel/tinker": "^2.7",
+        "smalot/pdfparser": "^2.2",
         "spatie/pdf-to-image": "^1.2",
         "thiagoalessio/tesseract_ocr": "^2.12"
     },
