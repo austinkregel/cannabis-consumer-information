@@ -23,7 +23,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/recalls', function () {
     return view('recall', [
-        'recalls' => \App\Models\Recall::all()
+        'recalls' => \App\Models\Recall::withCount(['products'])->get()
     ]);
 })->middleware(['auth'])->name('recalls');
 

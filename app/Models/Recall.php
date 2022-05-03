@@ -15,4 +15,9 @@ class Recall extends Model
         'user_id',
         'name',
     ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'recalled_products');
+    }
 }
