@@ -5,6 +5,7 @@ namespace App\Services\Pdf;
 
 use App\Contracts\Services\Pdf\PdfParserServiceContract;
 use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
+use mikehaertl\pdftk\Pdf;
 
 class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
 {
@@ -17,18 +18,39 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
 
     public function getRecallsFromPdfFile(string $filename): array
     {
-        $pdfText = $this->parserService->getPdfTextFromFile($filename);
-        $lines = explode("\n", $pdfText);
+        try {
+            $pdfText = $this->parserService->getPdfTextFromFile($filename);
+            $lines = explode("\n", $pdfText);
 
-        return $this->parsePdf($lines);
+            return $this->parsePdf($lines);
+        } catch (\Exception $e) {
+            if ($e->getMessage() === 'Secured pdf file are currently not supported.') {
+                // We can actually use pdftk to decrypt the file and then re-run the extraction.
+                $pdf = new Pdf();
+                $pdf->addFile($filename, null, '')->saveAs($filename);
+                return $this->getRecallsFromPdfFile($filename);
+            }
+            throw $e;
+        }
     }
 
     public function getPackageIdsFromPdfFile(string $filename): array
     {
-        $pdfText = $this->parserService->getPdfTextFromFile($filename);
-        $lines = explode("\n", $pdfText);
+        try {
+            $pdfText = $this->parserService->getPdfTextFromFile($filename);
+            $lines = explode("\n", $pdfText);
 
-        return $this->parsePackagesFromPdf($lines);
+            return $this->parsePackagesFromPdf($lines);
+        } catch (\Exception $e) {
+            if ($e->getMessage() === 'Secured pdf file are currently not supported.') {
+                // We can actually use pdftk to decrypt the file and then re-run the extraction.
+                $pdf = new Pdf();
+                $pdf->addFile($filename, null, '')->saveAs($filename);
+                // Sometimes decrypting results in some missing data so we filter out things that obvs arent ids.
+                return array_values(array_filter($this->getPackageIdsFromPdfFile($filename), fn ($product) => strlen($product) > 2));
+            }
+            throw $e;
+        }
     }
 
     protected function parsePackagesFromPdf(array $lines): array

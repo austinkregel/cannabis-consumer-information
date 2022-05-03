@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use mikehaertl\pdftk\Pdf;
 
 class FetchRecalledProductsJob implements ShouldQueue
 {
@@ -38,15 +39,10 @@ class FetchRecalledProductsJob implements ShouldQueue
 
             $data = $pdfExtractionService->getPackageIdsFromPdfFile($path);
         } catch (\Exception $e) {
-            if ($e->getMessage() === 'Secured pdf file are currently not supported.') {
-                info('Secured pdf files are currently not supported.', [
-                    'exception' => $e->getMessage(),
-                    'recall' => $this->recall->toArray(),
-                ]);
-            }
-
-            info('Failed to fetch recalled products for ' . $this->recall->mra_public_notice_url);
-            return;
+            info('Failed to fetch recalled products for ' . $this->recall->mra_public_notice_url, [
+                'exception' => $e->getMessage(),
+            ]);
+            return;            
         } finally {
             unlink($path);
         }
