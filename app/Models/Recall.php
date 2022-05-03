@@ -12,6 +12,7 @@ class Recall extends Model
     public $fillable = [
         'mra_public_notice_url',
         'published_at',
-        'user_id'
+        'user_id',
+        'name',
     ];
 }

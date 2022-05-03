@@ -42,6 +42,7 @@ class SyncMichiganRecallsJob implements ShouldQueue
                     'mra_public_notice_url' => $link['link'],
                     'published_at' => $link['published_at'],
                     'user_id' => $systemUser->id,
+                    'name' => $link['title'],
                 ]);
             }
         }
