@@ -5,9 +5,5 @@ jobs:
     name: PHPUnit
     runs-on: ubuntu-latest
     steps:
-    - name: PHPUnit tests
-      uses: php-actions/phpunit@v3
-      with:
-        configuration: phpunit.xml
-        memory_limit: 256M
-        php_version: 8.1
+    - uses: actions/checkout@v1
+    - uses: nathanheffley/laravel-phpunit-action@master
