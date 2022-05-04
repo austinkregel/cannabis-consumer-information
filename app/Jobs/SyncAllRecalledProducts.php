@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Recall;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,22 +15,11 @@ class SyncAllRecalledProducts implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(Dispatcher $dispatcher)
     {
         $page = 1;
 
@@ -37,7 +27,7 @@ class SyncAllRecalledProducts implements ShouldQueue
             $paginator = Recall::paginate(100, ['*'], 'page', $page++);
 
             foreach ($paginator->items() as $recall) {
-                dispatch(new FetchRecalledProductsJob($recall));
+                $dispatcher->dispatch(new FetchRecalledProductsJob($recall));
             };
         } while ($paginator->hasMorePages());
     }

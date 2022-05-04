@@ -20,11 +20,6 @@ class SyncMichiganRecallsJob implements ShouldQueue
 
     public const MICHIGAN_RECALLS_URL = 'https://www.michigan.gov/mra/bulletins';
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle(CrawlerContract $crawler, SystemUserRepositoryContract $systemUserRepository)
     {
         $systemUser = $systemUserRepository->findOrFail();

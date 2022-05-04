@@ -16,21 +16,10 @@ class FetchRecalledProductsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct(public Recall $recall)
     {
-        //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle(RecallPdfExtractionServiceContract $pdfExtractionService)
     {
         try {
