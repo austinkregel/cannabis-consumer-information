@@ -1,7 +1,15 @@
 require('./bootstrap');
+import { createApp } from 'vue'
+import Recall from './Pages/Recall.vue';
+import KnownRecalls from './components/KnownRecalls.vue';
+import RecallSearch from './components/RecallSearch.vue';
+import store from './store'
 
-import Alpine from 'alpinejs';
+const app = createApp({});
+app.use(store);
 
-window.Alpine = Alpine;
+app.component('recall', Recall);
+app.component('known-recalls', KnownRecalls);
+app.component('recall-search', RecallSearch);
 
-Alpine.start();
+app.mount('#app')
