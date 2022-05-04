@@ -1,7 +1,14 @@
 <?php
 
+use App\Jobs\FetchRecalledProductsJob;
+use App\Jobs\SyncAllRecalledProducts;
+use App\Jobs\SyncMichiganRecallsJob;
+use App\Models\Recall;
+use App\Services\Crawler\PdfCrawler;
+use GuzzleHttp\Client;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Spatie\Crawler\Crawler;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,18 +25,14 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('test', function () {
-    $url = 'https://www.michigan.gov/mra/-/media/Project/Websites/mra/bulletin/1Public-Health-an-Safety-Advisory/3843_Euclid_Recall_Notice_7-7-2021_FINAL_729720_7.pdf';
-
-    file_put_contents('/tmp/test.pdf', file_get_contents($url));
-
-    $pdf = new \Spatie\PdfToImage\Pdf('/tmp/test.pdf');
-    $pdf->saveImage('output.jpg');
-});
-
 Artisan::command('test2', function () {
     /** @var \App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract $s */
     $s = app(\App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract::class);
     $x = $s->getPackageIdsFromPdfFile('./pdf.pdf');
     dd($x);
+});
+
+Artisan::command('test3', function() {
+    dispatch_sync(new SyncMichiganRecallsJob);
+    dispatch_sync(new SyncAllRecalledProducts);
 });

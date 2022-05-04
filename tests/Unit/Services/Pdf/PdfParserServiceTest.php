@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\Pdf;
 
 use App\Services\Pdf\PdfParserService;
+use App\Services\Pdf\PdfReaderService;
 use Mockery\MockInterface;
 use Smalot\PdfParser\Document;
 use Smalot\PdfParser\Parser;
@@ -19,7 +20,7 @@ class PdfParserServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->pdfParser = \Mockery::mock(Parser::class);
+        $this->pdfParser = \Mockery::mock(PdfReaderService::class);
         $this->service = new PdfParserService($this->pdfParser);
     }
 

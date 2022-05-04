@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "doctrine/dbal": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/breeze": "^1.9",
         "laravel/fortify": "^1.12",
@@ -13,9 +14,8 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/spark-stripe": "^2.0",
         "laravel/tinker": "^2.7",
-        "smalot/pdfparser": "^2.2",
-        "spatie/pdf-to-image": "^1.2",
-        "thiagoalessio/tesseract_ocr": "^2.12"
+        "mikehaertl/php-pdftk": "^0.12.0",
+        "smalot/pdfparser": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

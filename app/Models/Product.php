@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
+    public $incrementing = false;
+
+    public $fillable = ['id'];
+
+    public function recalls()
+    {
+        return $this->belongsToMany(Recall::class, 'recalled_products');
+    }
 }

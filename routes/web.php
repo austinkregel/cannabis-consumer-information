@@ -21,9 +21,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/recall', function () {
-    return view('recall');
-})->middleware(['auth'])->name('recall');
+Route::get('/recalls', function () {
+    return view('recall', [
+        'recalls' => \App\Models\Recall::withCount(['products'])->get()
+    ]);
+})->middleware(['auth'])->name('recalls');
 
 Route::post('/recall-check', function () {
 
