@@ -34,7 +34,7 @@ class SyncAllRecalledProducts implements ShouldQueue
         $page = 1;
 
         do {
-            $paginator = Recall::paginate(100, ['*'], 'page', $page);
+            $paginator = Recall::paginate(100, ['*'], 'page', $page++);
 
             foreach ($paginator->items() as $recall) {
                 dispatch(new FetchRecalledProductsJob($recall));
