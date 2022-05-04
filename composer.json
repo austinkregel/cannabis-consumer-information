@@ -14,6 +14,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/spark-stripe": "^2.0",
         "laravel/tinker": "^2.7",
+        "mikehaertl/php-pdftk": "^0.12.0",
         "smalot/pdfparser": "^2.2"
     },
     "require-dev": {
