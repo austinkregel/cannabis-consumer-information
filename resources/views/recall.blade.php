@@ -30,7 +30,7 @@
                     Known recalls
                 </div>
             </div>
-            <div class="flex flex-col gap-4 bg-white dark:bg-gray-700 overflow-hidden shadow-sm sm:rounded-lg p-2">
+            <div class="grid grid-cols-4 gap-4 bg-white dark:bg-gray-700 overflow-hidden shadow-sm sm:rounded-lg p-2">
                 <template x-for="recall in recalls" x-key="recall.id">
                     <div class="bg-white text-gray-900 dark:bg-gray-600 dark:text-white py-2 px-2 rounded" >
                         <div class="font-bold">
@@ -43,8 +43,6 @@
                         <div>Impacted Products <span x-text="recall.products_count">/span></div>
                     </div>
                 </template>
-
-                <pre x-text="JSON.stringify(recalls, null, 4)"></pre>
             </div>
         </div>
     </div>
