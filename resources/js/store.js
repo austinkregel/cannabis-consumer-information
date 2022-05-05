@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
     state: {
+        user: {},
         recalls: [],
         products: [],
         dispensaries: [],
@@ -10,10 +11,14 @@ export default createStore({
         recalls: state => state.recalls,
         products: state => state.products,
         dispensaries: state => state.dispensaries,
+        user: state => state.user ?? {},
     },
     mutations: {
         setRecalls(state, payload) {
             state.recalls = payload;
+        },
+        setUser(state, user) {
+            state.user = user;
         }
     },
     actions: {

@@ -27,9 +27,4 @@ Route::get('/recalls', function () {
     ]);
 })->middleware(['auth'])->name('recalls');
 
-Route::post('/recall-check', function () {
-
-    return 'hello world';
-})->middleware(['auth'])->name('recall-check');
-
 require __DIR__.'/auth.php';
