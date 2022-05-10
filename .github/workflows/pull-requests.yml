@@ -12,22 +12,22 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: test
         ports:
-          - 33306:3306
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
- 
+
     steps:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
- 
+
     - name: Install composer dependencies
       run: |
         composer install --no-scripts
- 
+
     - name: Prepare Laravel Application
       run: |
-        cp .env.example .env
+        cp .env.pipelines .env
         php artisan key:generate
- 
+
     - name: Run Testsuite
       run: vendor/bin/phpunit tests/
