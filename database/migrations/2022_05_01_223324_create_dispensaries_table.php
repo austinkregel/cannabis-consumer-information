@@ -22,6 +22,12 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
+            $table->boolean('is_active')->nullable();
+            $table->date('license_expires_at')->nullable();
+            $table->string('official_license_type')->nullable();
+            $table->string('license_type')->nullable();
+            $table->boolean('is_recreational')->default(true);
+
             // Owner?
             $table->foreignIdFor(User::class)->nullable();
             $table->timestamps();
