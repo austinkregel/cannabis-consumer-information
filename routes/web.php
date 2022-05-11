@@ -21,10 +21,4 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/recalls', function () {
-    return view('recall', [
-        'recalls' => \App\Models\Recall::withCount(['products'])->get()
-    ]);
-})->middleware(['auth'])->name('recalls');
-
 require __DIR__.'/auth.php';

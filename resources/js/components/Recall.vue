@@ -5,7 +5,7 @@
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div>
-                <div class="text-3xl text-gray-900 dark:text-gray-50 py-2 px-4">
+                <div class="text-3xl text-slate-900 dark:text-slate-50 py-2 px-4">
                     Known recalls
                 </div>
             </div>
