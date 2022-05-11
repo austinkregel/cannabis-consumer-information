@@ -63,7 +63,6 @@ export default {
     name: 'Navigation',
     props: ['user'],
     data () {
-      console.log(window.location.pathname);
         return {
             open: false,
              navigation: [

@@ -2,8 +2,20 @@
       <div class="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 mt-6">
         <!-- Replace with your content -->
         <recall-search />
-        
-        <known-recalls />
+        <div v-if="$store.getters?.recalls?.length > 0" class="grid grid-cols-4 gap-4 dark:bg-slate-700 overflow-hidden shadow-sm sm:rounded-lg py-4 px-4 mt-6">
+            <template v-for="recall in $store.getters.recalls" :key="recall.id">
+                <div class="text-slate-900 dark:bg-slate-600 dark:text-white py-2 px-4 rounded" >
+                    <div class="font-bold">
+                        <a target="_blank" :href="recall.mra_public_notice_url" v-text="recall.name"></a>
+                    </div>
+                    <div>
+                        <span v-text="recall.published_at"></span>
+                    </div>
+                    <div>Impacted Products <span v-text="recall.products_count"></span></div>
+                </div>
+            </template>
+        </div>
+
 
         <div class="mt-8">
             <div class="rounded-lg bg-slate-200 dark:bg-slate-600 overflow-hidden shadow divide-y divide-slate-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
@@ -76,7 +88,7 @@ export default {
         ReceiptRefundIcon,
         UsersIcon,
         ExternalLinkIcon,
-        ChevronRightIcon,
+        ChevronRightIcon
     },
     data() {
         return {
