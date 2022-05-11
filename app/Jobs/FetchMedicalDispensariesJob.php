@@ -34,7 +34,7 @@ class FetchMedicalDispensariesJob implements ShouldQueue
      */
     public function handle()
     {
-        $reader = Reader::createFromPath(storage_path('medial-dispensaries.csv'));
+        $reader = Reader::createFromPath(storage_path('medical-dispensaries.csv'));
 
         $headers = [];
         $dispensaries = [];
