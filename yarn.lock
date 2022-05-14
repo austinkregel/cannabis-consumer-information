@@ -951,6 +951,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@kbco/query-builder@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@kbco/query-builder/-/query-builder-0.0.3.tgz#a601ab7724b0f5507268ef8b46aad3cf13b456e2"
+  integrity sha512-oA0Wrm9sNBemGbB9532Z3lHrPpXk2yu5eKfjhZNmMIuljTX6IYMYOwbJFiMmzjgmoj968WNxfreV+0QQih6g6Q==
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.3.tgz#0300943770e04231041a51bd39f0439b5c7ab4f0"
