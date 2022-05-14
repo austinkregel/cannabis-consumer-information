@@ -39,24 +39,23 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
         $reader = Reader::createFromPath(storage_path('recreation-dispensaries.csv'));
 
         $headers = [];
-        $dispensaries = [];
         foreach ($reader as $row) {
             if (empty($headers)) {
                 $headers = $row;
                 continue;
             }
 
-            $data = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
-            unset($data['']);
-            $dispensaries[] = $data;
-        }
-
-        foreach ($dispensaries as $dispensary) {
+            $dispensary = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
+            unset($dispensary['']);
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
                 if (!empty($dispensary['address'])) {
-                    $geocode = $service->geocode($dispensary['address']);
+                    try { 
+                        $geocode = $service->geocode($dispensary['address']);
+                    } catch (\Throwable $e) {
+                        $geocode = null;
+                    };
                 }
 
                 Dispensary::create([
@@ -83,8 +82,8 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 'official_license_type' => $dispensary['record_type'],
                 'license_type' => $this->filterLicenseType($dispensary['record_type']),
                 'is_recreational' => true,
-            ]);
-        }
+            ]);       
+         }
     }
 
     protected function filterLicenseType($licenseType)

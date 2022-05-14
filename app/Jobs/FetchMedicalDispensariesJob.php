@@ -38,19 +38,15 @@ class FetchMedicalDispensariesJob implements ShouldQueue
         $reader = Reader::createFromPath(storage_path('medical-dispensaries.csv'));
 
         $headers = [];
-        $dispensaries = [];
         foreach ($reader as $row) {
             if (empty($headers)) {
                 $headers = $row;
                 continue;
             }
 
-            $data = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
-            unset($data['']);
-            $dispensaries[] = $data;
-        }
+            $dispensary = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
+            unset($dispensary['']);
 
-        foreach ($dispensaries as $dispensary) {
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {

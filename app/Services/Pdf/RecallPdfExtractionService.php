@@ -43,12 +43,12 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
                     ->map(fn ($str) => preg_replace('/[^[:print:]]/', '', trim(str_replace(' ', '', $str), " \t\n\r\0\x0B:)(")))
                     ->filter()
                     // The MRA email gets caught in this regex, so let's filter out anything starting with MRA 
-                    ->filter(fn ($str) => !str_starts_with($str, 'MRA'))
+                    ->filter(fn ($str) => !str_starts_with($str, 'MRA') && !str_starts_with($str, 'AGE') && !str_starts_with($str, 'LLC'))
                     ->merge($matches)
                     ->unique();
             }
         }
-        
+
         return $matches->toArray();
     }
 
