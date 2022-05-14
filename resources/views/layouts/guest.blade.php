@@ -11,14 +11,15 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
+    <body class="font-sans antialiased bg-slate-200 dark:bg-slate-500">
+        <div>
             {{ $slot }}
-        </div>
+        </div>  
+        <!-- Scripts -->
+        <script src="{{ mix('js/app.js') }}" defer></script>
+        {!! $scripts ?? '' !!}
     </body>
 </html>
