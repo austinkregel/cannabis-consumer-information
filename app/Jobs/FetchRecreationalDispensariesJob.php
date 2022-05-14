@@ -82,7 +82,10 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 'official_license_type' => $dispensary['record_type'],
                 'license_type' => $this->filterLicenseType($dispensary['record_type']),
                 'is_recreational' => true,
-            ]);       
+            ]); 
+            
+            $dispo = null;
+            $dispensary = null;
          }
     }
 
