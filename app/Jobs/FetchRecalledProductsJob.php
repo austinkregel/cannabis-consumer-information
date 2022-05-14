@@ -24,9 +24,8 @@ class FetchRecalledProductsJob implements ShouldQueue
 
     public function handle(RecallPdfExtractionServiceContract $pdfExtractionService)
     {
+        file_put_contents($path = storage_path('/' . $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
         try {
-            file_put_contents($path = storage_path('/' . $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
-
             $data = $pdfExtractionService->getAllIdentifiers($path);
         } catch (\Exception $e) {
             info('Failed to fetch recalled products for ' . $this->recall->mra_public_notice_url, [

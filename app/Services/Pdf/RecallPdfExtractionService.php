@@ -81,7 +81,7 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
                 // We can actually use pdftk to decrypt the file and then re-run the extraction.
                 $pdf = new Pdf();
                 $pdf->addFile($filename, null, '')->saveAs($filename);
-                return $this->parseAndHandleEncryptedPdf($filename, $recursionCounter++);
+                return $this->parserService->getPdfTextFromFile($filename);
             }
             throw $e;
         }
