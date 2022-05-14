@@ -55,7 +55,11 @@ class FetchMedicalDispensariesJob implements ShouldQueue
 
             if (!$dispo) {
                 if (!empty($dispensary['address'])) {
-                    $geocode = $service->geocode($dispensary['address']);
+                    try {
+                        $geocode = $service->geocode($dispensary['address']);
+                    } catch (\Throwable $e) {
+                        $geocode = null;
+                    }
                 }
                 Dispensary::create([
                     'name' => $dispensary['licensee_name'],
