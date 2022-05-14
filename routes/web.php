@@ -53,6 +53,10 @@ Route::get('/dispensaries', function () {
     ]);
 });
 
+Route::get('/dispensary/{dispensary:license_number}', function (Dispensary $dispensary) {
+    return view('dispensary', compact('dispensary'));
+})->name('dashboard');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
