@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Contracts\Services\GoogleMapsGeocodingService;
+use App\Contracts\Services\GoogleMapsGeocodingServiceContract;
 use App\Models\Dispensary;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -32,7 +34,7 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(GoogleMapsGeocodingServiceContract $service)
     {
         $reader = Reader::createFromPath(storage_path('recreation-dispensaries.csv'));
 
@@ -53,10 +55,16 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
+                if (!empty($dispensary['address'])) {
+                    $geocode = $service->geocode($dispensary['address']);
+                }
+
                 Dispensary::create([
                     'name' => $dispensary['license_name'],
+                    'latitude' => $geocode->latitude ?? null,
+                    'longitude' => $geocode->longitude ?? null,
                     'license_number' => $dispensary['record_number'],
-                    'address' => $dispensary['address'],
+                    'address' => empty($dispensary['address'])? null : $dispensary['address'],
                     'is_active' => $dispensary['status'] !== 'Closed',
                     'license_expires_at' => Carbon::createFromFormat('m/d/Y', $dispensary['expiration_date']),
                     'official_license_type' => $dispensary['record_type'],
@@ -69,7 +77,7 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
             $dispo->update([
                 'name' => $dispensary['license_name'],
                 'license_number' => $dispensary['record_number'],
-                'address' => $dispensary['address'],
+                'address' => empty($dispensary['address'])? null : $dispensary['address'],
                 'is_active' => $dispensary['status'] !== 'Closed',
                 'license_expires_at' => Carbon::createFromFormat('m/d/Y', $dispensary['expiration_date']),
                 'official_license_type' => $dispensary['record_type'],

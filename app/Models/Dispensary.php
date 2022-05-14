@@ -22,5 +22,7 @@ class Dispensary extends Model
         'license_type',
         'user_id',
         'is_recreational',
+        'latitude',
+        'longitude',
     ];
 }

@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
         Contracts\Services\Pdf\RecallPdfExtractionServiceContract::class => Services\Pdf\RecallPdfExtractionService::class,
         Contracts\Services\Crawler\CrawlerContract::class => Services\Crawler\PdfCrawler::class,
         Contracts\Repositories\SystemUserRepositoryContract::class => Repositories\SystemUserRepository::class,
+        Contracts\Services\GoogleMapsGeocodingServiceContract::class => Services\GoogleMapsGeocodingService::class,
     ];
 
     /**
