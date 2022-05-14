@@ -25,5 +25,5 @@ Route::post('search', function (Request $request) {
     return Recall::with(['products' => $where])->whereHas('products', $where)->get();
 });
 Route::get('recalls', function (Request $request) {
-    return Recall::withCount('products')->get();
+    return Recall::withCount('products', 'dispensaries')->get();
 });
