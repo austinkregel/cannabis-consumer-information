@@ -46,5 +46,6 @@
             </footer>
         </div>
         <script src="{{ mix('js/app.js') }}" defer></script>
+        {!! $scripts !!}
     </body>
 </html>
