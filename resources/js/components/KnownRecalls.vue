@@ -9,6 +9,7 @@
                     <span v-text="recall.published_at"></span>
                 </div>
                 <div>Impacted Products <span v-text="recall.products_count"></span></div>
+                <div>Impacted Facilities <span v-text="recall.dispensaries_count"></span></div>
             </div>
         </template>
     </div>
@@ -16,7 +17,6 @@
         <div class="text-center text-slate-900 dark:bg-slate-600 dark:text-white py-2 px-4 rounded mt-6" >
             <div class="font-bold">
                 No recalls found
-
             </div>
         </div>
     </div>
@@ -24,7 +24,6 @@
 <script>
 export default {
     mounted() {
-        console.log(this.$store.getters.recalls)
     }
 }
 </script>
