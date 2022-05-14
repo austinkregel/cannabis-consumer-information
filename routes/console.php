@@ -6,6 +6,7 @@ use App\Jobs\FetchRecalledProductsJob;
 use App\Jobs\FetchRecreationalDispensariesJob;
 use App\Jobs\SyncAllRecalledProducts;
 use App\Jobs\SyncMichiganRecallsJob;
+use App\Models\Dispensary;
 use App\Models\Recall;
 use Illuminate\Support\Facades\Artisan;
 
@@ -19,8 +20,20 @@ Artisan::command('test', function () {
 });
 
 Artisan::command('seed-everything', function() {
-    dispatch_sync(new FetchMedicalDispensariesJob);
-    dispatch_sync(new FetchRecreationalDispensariesJob);
-    dispatch_sync(new SyncMichiganRecallsJob);
-    dispatch_sync(new SyncAllRecalledProducts);
+    dispatch(new FetchMedicalDispensariesJob);
+    dispatch(new FetchRecreationalDispensariesJob);
+    dispatch(new SyncMichiganRecallsJob);
+    dispatch(new SyncAllRecalledProducts);
+});
+
+Artisan::command('explore', function () {
+    $dispos = Dispensary::with('recalls')->where('name', 'Likely a closed establishment')->whereHas('recalls')->get();
+
+
+    dd($dispos->map(function ($dispo) {
+        return [
+            $dispo->license_number,
+            $dispo->recalls->pluck('id'),
+        ];
+    })->toArray());
 });
