@@ -29,4 +29,9 @@ class Dispensary extends Model
     public $dates = [
         'license_expires_at',
     ];
+
+    public function recalls()
+    {
+        return $this->belongsToMany(Recall::class, 'recalled_dispensaries');
+    }
 }

@@ -32,4 +32,9 @@ class Recall extends Model
     {
         return $this->belongsToMany(Product::class, 'recalled_products');
     }
+
+    public function dispensaries()
+    {
+        return $this->belongsToMany(Dispensary::class, 'recalled_dispensaries');
+    }
 }
