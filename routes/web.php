@@ -41,15 +41,105 @@ Route::get('/dispensaries', function () {
     ]);
 
     if (request()->has('q')) {
-        $query->where('name', 'like', '%'.request()->get('q').'%')
-        ->orWhere('license_number', 'like', '%'.request()->get('q').'%');
+        $query->where(function ($query) {
+            $query->where('name', 'like', '%'.request()->get('q').'%')
+                ->orWhere('address', 'like', '%'.request()->get('q').'%')
+                ->orWhere('license_number', 'like', '%'.request()->get('q').'%');
+        });
     }
-    if (request()->has('type')) {
-        $query->where('license_type', request()->get('type'));
+    if (request()->has('is_recreational')) {
+        $query->where('is_recreational', request('is_recreational') === "true");
     }
+    $query->whereIn('license_type', [
+        'retailer',
+        'provisioning',
+    ]);
 
     return view('dispensaries', [
-        'dispensaries' => $query->paginate(15, ['*'], 'page', request('page', 1)),
+        'dispensaries' => $query->paginate(25, ['*'], 'page', request('page', 1)),
+    ]);
+});
+Route::get('/testers', function () {
+    $query = Dispensary::query();
+    request()->validate([
+        'type' => Rule::in([
+            'prequalification',
+            'grower',
+            'provisioning',
+            'individual',
+            'compliance',
+            'adult_use_entity',
+            'processor',
+            'event',
+            'retailer',
+            'transporter',
+            'microbusiness',
+            'temporary_event',
+            'consumption',
+            'complicance',
+            'sole_proprietor',
+        ]),
+    ]);
+
+    if (request()->has('q')) {
+        $query->where(function ($query) {
+            $query->where('name', 'like', '%'.request()->get('q').'%')
+                ->orWhere('address', 'like', '%'.request()->get('q').'%')
+                ->orWhere('license_number', 'like', '%'.request()->get('q').'%');
+        });
+    }
+
+    if (request()->has('is_recreational')) {
+        $query->where('is_recreational', request('is_recreational') === "true");
+    }
+    $query->whereIn('license_type', [
+        'processor',
+        'sole_proprietor',
+        'compliance',
+    ]);
+
+    return view('dispensaries', [
+        'dispensaries' => $query->paginate(25, ['*'], 'page', request('page', 1)),
+    ]);
+});
+Route::get('/growers', function () {
+    $query = Dispensary::query();
+    request()->validate([
+        'type' => Rule::in([
+            'prequalification',
+            'grower',
+            'provisioning',
+            'individual',
+            'compliance',
+            'adult_use_entity',
+            'processor',
+            'event',
+            'retailer',
+            'transporter',
+            'microbusiness',
+            'temporary_event',
+            'consumption',
+            'complicance',
+            'sole_proprietor',
+        ]),
+    ]);
+
+    if (request()->has('q')) {
+        $query->where(function ($query) {
+            $query->where('name', 'like', '%'.request()->get('q').'%')
+                ->orWhere('address', 'like', '%'.request()->get('q').'%')
+                ->orWhere('license_number', 'like', '%'.request()->get('q').'%');
+        });
+    }
+
+    if (request()->has('is_recreational')) {
+        $query->where('is_recreational', request('is_recreational') === "true");
+    }
+
+    $query->whereIn('license_type', ['grower']);
+
+    return view('dispensaries', [
+        'dispensaries' => $query->paginate(25, ['*'], 'page', request('page', 1)),
     ]);
 });
 
