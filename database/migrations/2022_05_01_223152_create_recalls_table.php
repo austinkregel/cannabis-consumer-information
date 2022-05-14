@@ -34,8 +34,11 @@ return new class extends Migration
             $table->timestamps();
         });
         Schema::create('recalled_products', function (Blueprint $table){
-            $table->string('product_id')->primary();
+            $table->string('product_id');
             $table->foreignIdFor(Recall::class);
+
+            $table->unique(['product_id', 'recall_id']);
+            $table->foreign('product_id')->references('id')->on('products');
         });
         Schema::create('recalled_dispensaries', function (Blueprint $table){
             $table->foreignIdFor(Dispensary::class);
