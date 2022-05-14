@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Contracts\Services\GoogleMapsGeocodingServiceContract;
 use App\Models\Dispensary;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -32,7 +33,7 @@ class FetchMedicalDispensariesJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(GoogleMapsGeocodingServiceContract $service)
     {
         $reader = Reader::createFromPath(storage_path('medical-dispensaries.csv'));
 
@@ -53,8 +54,13 @@ class FetchMedicalDispensariesJob implements ShouldQueue
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
+                if (!empty($dispensary['address'])) {
+                    $geocode = $service->geocode($dispensary['address']);
+                }
                 Dispensary::create([
                     'name' => $dispensary['licensee_name'],
+                    'latitude' => $geocode->latitude ?? null,
+                    'longitude' => $geocode->longitude ?? null,
                     'license_number' => $dispensary['record_number'],
                     'address' => $dispensary['address'],
                     'is_active' => $dispensary['status'] === 'Active',

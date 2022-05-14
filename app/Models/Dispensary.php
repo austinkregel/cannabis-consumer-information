@@ -25,4 +25,8 @@ class Dispensary extends Model
         'latitude',
         'longitude',
     ];
+
+    public $dates = [
+        'license_expires_at',
+    ];
 }
