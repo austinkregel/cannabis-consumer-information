@@ -8,4 +8,6 @@ interface RecallPdfExtractionServiceContract
     public function getRecallsFromPdfFile(string $filename): array;
 
     public function getPackageIdsFromPdfFile(string $filename): array;
+
+    public function getAllIdentifiers(string $filename): array;
 }

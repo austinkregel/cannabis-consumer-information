@@ -16,38 +16,72 @@ class RecallPdfExtractionService implements RecallPdfExtractionServiceContract
         $this->parserService = $parserService;
     }
 
+    public function getAllIdentifiers(string $filename): array
+    {
+        $pdfContents = $this->parseAndHandleEncryptedPdf($filename);
+
+        $replacements = [
+            "  " => " ",
+            "\n" => " ",
+            "\t" => " ",
+            " - " => "-",
+            "- " => "-",
+            " -" => "-",
+        ];
+
+        foreach ($replacements as $search => $replace) {
+            $pdfContents = str_replace($search, $replace, $pdfContents);
+        }
+
+        $lines = array_values(array_filter(explode("\n", $pdfContents)));
+        $matches = collect([]);
+
+        foreach ($lines as $line) {
+            if (preg_match_all('/(1[\s]?A[\s]?4[\s]?.+?[^A-Z\d])|([A-Z-]{1,3}-[A-Z-0-9]{1,3}.+?[^A-Z\d])/m', $line, $allMatches)) {
+                $matches = collect($allMatches)
+                    ->flatten()
+                    ->map(fn ($str) => preg_replace('/[^[:print:]]/', '', trim(str_replace(' ', '', $str), " \t\n\r\0\x0B:)(")))
+                    ->filter()
+                    // The MRA email gets caught in this regex, so let's filter out anything starting with MRA 
+                    ->filter(fn ($str) => !str_starts_with($str, 'MRA'))
+                    ->merge($matches)
+                    ->unique();
+            }
+        }
+        
+        return $matches->toArray();
+    }
+
     public function getRecallsFromPdfFile(string $filename): array
     {
-        try {
-            $pdfText = $this->parserService->getPdfTextFromFile($filename);
-            $lines = explode("\n", $pdfText);
-
-            return $this->parsePdf($lines);
-        } catch (\Exception $e) {
-            if ($e->getMessage() === 'Secured pdf file are currently not supported.') {
-                // We can actually use pdftk to decrypt the file and then re-run the extraction.
-                $pdf = new Pdf();
-                $pdf->addFile($filename, null, '')->saveAs($filename);
-                return $this->getRecallsFromPdfFile($filename);
-            }
-            throw $e;
-        }
+        $pdfContents = $this->parseAndHandleEncryptedPdf($filename);
+        $lines = array_values(array_filter(explode("\n", $pdfContents)));
+        return $this->parsePdf($lines);
     }
 
     public function getPackageIdsFromPdfFile(string $filename): array
     {
+        $pdfContents = $this->parseAndHandleEncryptedPdf($filename);
+        $lines = array_values(array_filter(explode("\n", $pdfContents)));
+        return $this->parsePackagesFromPdf($lines);
+    }
+
+    protected function parseAndHandleEncryptedPdf(string $filename, int $recursionCounter = 0): string
+    {
         try {
             $pdfText = $this->parserService->getPdfTextFromFile($filename);
-            $lines = explode("\n", $pdfText);
+            
+            if (empty($pdfText)) {
+                throw new \Exception('Secured pdf file are currently not supported.');
+            }
 
-            return $this->parsePackagesFromPdf($lines);
+            return $pdfText;
         } catch (\Exception $e) {
-            if ($e->getMessage() === 'Secured pdf file are currently not supported.') {
+            if ($e->getMessage() === 'Secured pdf file are currently not supported.' && $recursionCounter < 3) {
                 // We can actually use pdftk to decrypt the file and then re-run the extraction.
                 $pdf = new Pdf();
                 $pdf->addFile($filename, null, '')->saveAs($filename);
-                // Sometimes decrypting results in some missing data so we filter out things that obvs arent ids.
-                return array_values(array_filter($this->getPackageIdsFromPdfFile($filename), fn ($product) => strlen($product) > 2));
+                return $this->parseAndHandleEncryptedPdf($filename, $recursionCounter++);
             }
             throw $e;
         }
