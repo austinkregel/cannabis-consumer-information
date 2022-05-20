@@ -6,7 +6,6 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 mt-6">
-     
         <filterable-grid :items="{{ json_encode($dispensaries->items()) }}" >
           <template #item="{ item }">
             <div class="flex items-center space-x-4">

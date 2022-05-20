@@ -113,7 +113,7 @@ function get_center($coords)
             @endif
 
             <div class="text-xl mt-4 mb-2">Impacted Establishments</div>
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 @foreach ($recall->dispensaries as $dispensary)
                 <div class="relative rounded-lg border border-gray-300 dark:border-slate-500 bg-white dark:bg-slate-600 dark:hover:bg-slate-700 px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 dark:hover:border-gray-700 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                     <div class="flex-1 min-w-0">
