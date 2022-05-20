@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Dispensary;
+use App\Models\Recall;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
@@ -47,9 +48,8 @@ Route::get('/dispensaries', function () {
                 ->orWhere('license_number', 'like', '%'.request()->get('q').'%');
         });
     }
-    if (request()->has('is_recreational')) {
-        $query->where('is_recreational', request('is_recreational') === "true");
-    }
+    $query->where('is_recreational', request('is_recreational', 'true') === "true");
+    
     $query->whereIn('license_type', [
         'retailer',
         'provisioning',
@@ -89,9 +89,8 @@ Route::get('/testers', function () {
         });
     }
 
-    if (request()->has('is_recreational')) {
-        $query->where('is_recreational', request('is_recreational') === "true");
-    }
+    $query->where('is_recreational', request('is_recreational', 'true') === "true");
+
     $query->whereIn('license_type', [
         'processor',
         'sole_proprietor',
@@ -132,9 +131,7 @@ Route::get('/growers', function () {
         });
     }
 
-    if (request()->has('is_recreational')) {
-        $query->where('is_recreational', request('is_recreational') === "true");
-    }
+    $query->where('is_recreational', request('is_recreational', 'true') === "true");
 
     $query->whereIn('license_type', ['grower']);
 
@@ -144,11 +141,27 @@ Route::get('/growers', function () {
 });
 
 Route::get('/dispensary/{dispensary:license_number}', function (Dispensary $dispensary) {
+    $dispensary->load('recalls');
+
     return view('dispensary', compact('dispensary'));
 })->name('dashboard');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/recall/{recall:id}', function (App\Models\Recall $recall) {
+    $recall->load('dispensaries', 'products');
+
+    $recall = Recall::with([
+        'dispensaries' => function ($query) {
+            $query->withCount('recalls');
+        }, 
+    ])
+    ->withCount('products')
+    ->find($recall->id);
+
+    return view('recall', compact('recall'));
+});
 
 require __DIR__.'/auth.php';

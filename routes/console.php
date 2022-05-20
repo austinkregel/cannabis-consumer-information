@@ -4,11 +4,17 @@ use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
 use App\Jobs\FetchMedicalDispensariesJob;
 use App\Jobs\FetchRecalledProductsJob;
 use App\Jobs\FetchRecreationalDispensariesJob;
+use App\Jobs\GeocodeDispensariesJob;
 use App\Jobs\SyncAllRecalledProducts;
 use App\Jobs\SyncMichiganRecallsJob;
 use App\Models\Dispensary;
 use App\Models\Recall;
 use Illuminate\Support\Facades\Artisan;
+
+Artisan::command('sync-recalls', function () {
+    dispatch_sync(new SyncAllRecalledProducts);
+    // dispatch_sync(new SyncMichiganRecallsJob);
+})->describe('Sync recalls for all dispensaries');
 
 Artisan::command('test', function () {
     $recall = Recall::find(1);
@@ -19,11 +25,15 @@ Artisan::command('test', function () {
     dd(app(RecallPdfExtractionServiceContract::class)->getAllIdentifiers($file));
 });
 
+Artisan::command('geocode', function () {
+    dispatch_sync(new GeocodeDispensariesJob);
+});
+
 Artisan::command('seed-everything', function() {
     dispatch(new FetchMedicalDispensariesJob);
     dispatch(new FetchRecreationalDispensariesJob);
-    dispatch(new SyncMichiganRecallsJob);
-    dispatch(new SyncAllRecalledProducts);
+    // dispatch(new SyncMichiganRecallsJob);
+    // dispatch(new SyncAllRecalledProducts);
 });
 
 Artisan::command('explore', function () {
