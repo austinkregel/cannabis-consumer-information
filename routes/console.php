@@ -12,8 +12,8 @@ use App\Models\Recall;
 use Illuminate\Support\Facades\Artisan;
 
 Artisan::command('sync-recalls', function () {
+    dispatch_sync(new SyncMichiganRecallsJob);
     dispatch_sync(new SyncAllRecalledProducts);
-    // dispatch_sync(new SyncMichiganRecallsJob);
 })->describe('Sync recalls for all dispensaries');
 
 Artisan::command('test', function () {
