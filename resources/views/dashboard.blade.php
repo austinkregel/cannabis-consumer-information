@@ -8,6 +8,5 @@
     <div class="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 mt-6">
         <!-- Replace with your content -->
         <recall-search />
-    
     </div>
 </x-app-layout>
