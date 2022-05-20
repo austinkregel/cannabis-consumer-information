@@ -32,8 +32,8 @@ Artisan::command('geocode', function () {
 Artisan::command('seed-everything', function() {
     dispatch(new FetchMedicalDispensariesJob);
     dispatch(new FetchRecreationalDispensariesJob);
-    // dispatch(new SyncMichiganRecallsJob);
-    // dispatch(new SyncAllRecalledProducts);
+    dispatch(new SyncMichiganRecallsJob);
+    dispatch(new SyncAllRecalledProducts);
 });
 
 Artisan::command('explore', function () {
