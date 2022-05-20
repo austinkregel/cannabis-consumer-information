@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('recalls', function (Blueprint $table) {
             $table->string('name')->nullable()->after('id');
+            $table->string('original_name')->nullable()->after('name');
         });
     }
 
