@@ -59,7 +59,7 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                         $geocode = null;
                     };
                 }
-                info('Creating dispensary ' . $dispensary['licensee_name'] ?? null, [
+                info('Creating dispensary ' . $dispensary['license_name'] ?? null, [
                     'record_number' => $dispensary['record_number'],
                     'address' => $dispensary['address'],
                 ]);
@@ -77,7 +77,7 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 ]);
                 continue;
             }
-            info('Updating dispensary ' . $dispensary['licensee_name'] ?? null, [
+            info('Updating dispensary ' . $dispensary['license_name'] ?? null, [
                 'record_number' => $dispensary['record_number'],
                 'address' => $dispensary['address'],
             ]);
