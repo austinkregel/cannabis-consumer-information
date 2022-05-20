@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight pl-6">
-            {{ __('Dashboard') }}
+            {{ __('Recalls') }}
         </h2>
     </x-slot>
 
@@ -11,6 +11,5 @@
         <recall-search></recall-search>
         
         <known-recalls></known-recalls>
-
     </div>
 </x-app-layout>

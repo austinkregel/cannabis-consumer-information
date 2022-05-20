@@ -15,6 +15,7 @@ class Recall extends Model
         'published_at',
         'user_id',
         'name',
+        'original_name',
     ];
 
     public $appends = ['pretty_published_at'];

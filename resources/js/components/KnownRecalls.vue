@@ -3,7 +3,7 @@
         <template v-for="recall in $store.getters.recalls" :key="recall.id">
             <div class="text-slate-900 dark:bg-slate-600 dark:text-white py-2 px-4 rounded" >
                 <div class="font-bold">
-                    <a target="_blank" :href="recall.mra_public_notice_url" v-text="recall.name"></a>
+                    <a :href="'/recall/' + recall.id" v-text="recall.name"></a>
                 </div>
                 <div>
                     <span v-text="recall.published_at"></span>

@@ -14,7 +14,7 @@
 
                     <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
                     <MenuItems class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-slate-700 ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div class="p-2">
+                        <div class="p-4">
                             <SwitchGroup as="div" class="flex items-center">
                                 <Switch v-model="show_recreational" :class="[show_recreational ? 'bg-blue-400 dark:bg-blue-600' : 'bg-slate-200 dark:bg-slate-600', 'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500']">
                                     <span aria-hidden="true" :class="[show_recreational ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200']" />
@@ -25,7 +25,7 @@
                                 </SwitchLabel>
                             </SwitchGroup>
 
-                            <div class="mt-2">
+                            <div class="mt-4">
                                 <button @click.prevent="doSearch" class="rounded text-sm px-2 py-1 bg-blue-500 dark:bg-slate-800 dark:text-white">Apply</button>
                             </div>
                         </div>

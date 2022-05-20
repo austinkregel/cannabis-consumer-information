@@ -29,17 +29,24 @@ class SyncMichiganRecallsJob implements ShouldQueue
             return stripos($pdf['title'], 'recall') !== false;
         });
 
+        info('Found ' . count($recalls) . ' recall pdfs on Michigan state site.');
         foreach ($recalls as $link) {
-            $recall = Recall::firstWhere('mra_public_notice_url', $link['link']);
-
+            $recall = Recall::firstWhere('original_name', $link['original_title']);
             if (empty($recall)) {
+                info('Creating new recall for '. $link['original_title']);
                 Recall::create([
                     'mra_public_notice_url' => $link['link'],
                     'published_at' => $link['published_at'],
                     'user_id' => $systemUser->id,
                     'name' => $link['title'],
+                    'original_name' => $link['original_title'],
                 ]);
+                continue;
             }
+            info('Updating the CRA link');
+            $recall->update([
+                'mra_public_notice_url' => $link['link'],
+            ]);
         }
 
     }

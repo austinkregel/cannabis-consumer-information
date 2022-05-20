@@ -39,9 +39,11 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
         $reader = Reader::createFromPath(storage_path('recreation-dispensaries.csv'));
 
         $headers = [];
+        info('Updating recreational dispensaries');
         foreach ($reader as $row) {
             if (empty($headers)) {
                 $headers = $row;
+                info('Found headers', ['headers' => $headers]);
                 continue;
             }
 
@@ -57,7 +59,10 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                         $geocode = null;
                     };
                 }
-
+                info('Creating dispensary ' . $dispensary['licensee_name'], [
+                    'record_number' => $dispensary['record_number'],
+                    'address' => $dispensary['address'],
+                ]);
                 Dispensary::create([
                     'name' => $dispensary['license_name'],
                     'latitude' => $geocode->latitude ?? null,
@@ -72,6 +77,10 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 ]);
                 continue;
             }
+            info('Updating dispensary ' . $dispensary['licensee_name'], [
+                'record_number' => $dispensary['record_number'],
+                'address' => $dispensary['address'],
+            ]);
 
             $dispo->update([
                 'name' => $dispensary['license_name'],

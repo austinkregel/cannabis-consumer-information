@@ -54,19 +54,21 @@
             </div>
         </div>
         
+        <div class="flex flex-col gap-4 bg-white dark:bg-slate-700 overflow-hidden shadow-sm sm:rounded-lg p-4 mt-6" v-if="loading === false && !scan && code && recalls.length === 0">
         
-          <div class="rounded-md bg-green-50 dark:bg-teal-700 p-4 mt-6"  v-if="!loading && !scan && code && recalls.length === 0">
-            <div class="flex flex-col">
-                <div class="flex-shrink-0 flex items-center gap-2">
-                    <CheckCircleIcon class="h-6 w-6 text-green-400 dark:text-teal-300" aria-hidden="true" />
-                    <h3 class="font-medium text-green-800  dark:text-teal-100">This product is not recalled according to our records</h3>
-                </div>
-                <div class="ml-8">
-                    <div class="mt-2 text-sm text-green-700  dark:text-teal-50">
-                        <p>We've emailed the CRA to try and gain access to vendor information like which dispensary sold the product, who grew the product, who tested the product, and any related test results. This information should be made public, to allow any consumer or third party (like Michigan Cannabis Club) to audit the labels on the products they buy.</p>
+            <div class="rounded-md bg-green-50 dark:bg-teal-700 p-4">
+                <div class="flex flex-col">
+                    <div class="flex-shrink-0 flex items-center gap-2">
+                        <CheckCircleIcon class="h-6 w-6 text-green-400 dark:text-teal-300" aria-hidden="true" />
+                        <h3 class="font-medium text-green-800  dark:text-teal-100">This product is not recalled according to our records</h3>
                     </div>
-                    <div class="mt-2 text-sm text-green-700 dark:text-teal-50">
-                        Please understand that since information about the products are not public, we <b class="font-bold">cannot guarantee</b> that your product wasn't <a href="https://www.michigan.gov/mra/-/media/Project/Websites/mra/bulletin/1Public-Health-an-Safety-Advisory/111821_Notification_of_Marijuana_Product_Recall_Viridis_Bulletin_Update_741566_7.pdf?rev=17c593bdbd564a1ca1cf589fafdec38b&amp;hash=7CAD5E5B5FBB087652A0E2BCF7F61F65">tested by Viridis Laboratories, LLC, or Viridis North, LLC between August 10th, 2021, and November 16th, 2021</a>.
+                    <div class="ml-8">
+                        <div class="mt-2 text-sm text-green-700  dark:text-teal-50">
+                            <p>We've emailed the CRA to try and gain access to vendor information like which dispensary sold the product, who grew the product, who tested the product, and any related test results. This information should be made public, to allow any consumer or third party (like Michigan Cannabis Club) to audit the labels on the products they buy.</p>
+                        </div>
+                        <div class="mt-2 text-sm text-green-700 dark:text-teal-50">
+                            Please understand that since information about the products are not public, we <b class="font-bold">cannot guarantee</b> that your product wasn't <a href="https://www.michigan.gov/mra/-/media/Project/Websites/mra/bulletin/1Public-Health-an-Safety-Advisory/111821_Notification_of_Marijuana_Product_Recall_Viridis_Bulletin_Update_741566_7.pdf?rev=17c593bdbd564a1ca1cf589fafdec38b&amp;hash=7CAD5E5B5FBB087652A0E2BCF7F61F65">tested by Viridis Laboratories, LLC, or Viridis North, LLC between August 10th, 2021, and November 16th, 2021</a>.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,6 +114,7 @@ export default defineComponent({
             this.loading = false;
         },
         searchForRecalls() {
+            this.loading = true;
             this.scan = false;
             axios.post('/api/search', {
                 products: this.code?.split(',').map(code => code.trim()).filter(code => code.length),
@@ -119,12 +122,15 @@ export default defineComponent({
             .then((res) => {
                 this.recalls = res.data;
             })
+            .finally(() => {
+                this.loading = false;
+            })
         }
     },
     data() {
         return {
             code: '',
-            loading: false,
+            loading: null,
             scan: false,
             decoded: [],
             recalls: [],

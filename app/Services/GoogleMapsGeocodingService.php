@@ -16,9 +16,22 @@ class GoogleMapsGeocodingService implements GoogleMapsGeocodingServiceContract
         $url = $baseURL . $addressURL;
         $response = cache()->remember($address, now()->addDay(), fn () => $client->request('GET', $url)->getBody()->getContents());
         $response = json_decode($response);
-        $latitude = $response->results[0]->geometry->location->lat;
-        $longitude = $response->results[0]->geometry->location->lng;
-    
-        return new Geocode($latitude, $longitude);
+
+        if ($response->status === "ZERO_RESULTS") {
+            return new Geocode(null, null);
+        }
+
+        try {
+            $latitude = $response->results[0]->geometry->location->lat;
+            $longitude = $response->results[0]->geometry->location->lng;
+            return new Geocode($latitude, $longitude);
+        } catch (\Throwable $e) {
+            info('Failed to gecode ' . $address, [
+                'address' => $address,
+                'exception' => $e,
+            ]);
+
+            dd($response, $address);
+        }
     }
 }
