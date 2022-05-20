@@ -59,12 +59,12 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                         $geocode = null;
                     };
                 }
-                info('Creating dispensary ' . $dispensary['licensee_name'], [
+                info('Creating dispensary ' . $dispensary['licensee_name'] ?? null, [
                     'record_number' => $dispensary['record_number'],
                     'address' => $dispensary['address'],
                 ]);
                 Dispensary::create([
-                    'name' => $dispensary['license_name'],
+                    'name' => $dispensary['license_name'] ?? null,
                     'latitude' => $geocode->latitude ?? null,
                     'longitude' => $geocode->longitude ?? null,
                     'license_number' => $dispensary['record_number'],
@@ -77,13 +77,13 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 ]);
                 continue;
             }
-            info('Updating dispensary ' . $dispensary['licensee_name'], [
+            info('Updating dispensary ' . $dispensary['licensee_name'] ?? null, [
                 'record_number' => $dispensary['record_number'],
                 'address' => $dispensary['address'],
             ]);
 
             $dispo->update([
-                'name' => $dispensary['license_name'],
+                'name' => $dispensary['license_name'] ?? null,
                 'license_number' => $dispensary['record_number'],
                 'address' => empty($dispensary['address'])? null : $dispensary['address'],
                 'is_active' => $dispensary['status'] !== 'Closed',
