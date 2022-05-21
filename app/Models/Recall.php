@@ -15,6 +15,7 @@ class Recall extends Model
         'published_at',
         'user_id',
         'name',
+        'original_name',
     ];
 
     public $appends = ['pretty_published_at'];
@@ -31,5 +32,10 @@ class Recall extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'recalled_products');
+    }
+
+    public function dispensaries()
+    {
+        return $this->belongsToMany(Dispensary::class, 'recalled_dispensaries');
     }
 }

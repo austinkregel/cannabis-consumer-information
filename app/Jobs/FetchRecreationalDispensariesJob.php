@@ -39,28 +39,32 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
         $reader = Reader::createFromPath(storage_path('recreation-dispensaries.csv'));
 
         $headers = [];
-        $dispensaries = [];
+        info('Updating recreational dispensaries');
         foreach ($reader as $row) {
             if (empty($headers)) {
                 $headers = $row;
+                info('Found headers', ['headers' => $headers]);
                 continue;
             }
 
-            $data = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
-            unset($data['']);
-            $dispensaries[] = $data;
-        }
-
-        foreach ($dispensaries as $dispensary) {
+            $dispensary = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
+            unset($dispensary['']);
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
                 if (!empty($dispensary['address'])) {
-                    $geocode = $service->geocode($dispensary['address']);
+                    try { 
+                        $geocode = $service->geocode($dispensary['address']);
+                    } catch (\Throwable $e) {
+                        $geocode = null;
+                    };
                 }
-
+                info('Creating dispensary ' . $dispensary['license_name'] ?? null, [
+                    'record_number' => $dispensary['record_number'],
+                    'address' => $dispensary['address'],
+                ]);
                 Dispensary::create([
-                    'name' => $dispensary['license_name'],
+                    'name' => $dispensary['license_name'] ?? null,
                     'latitude' => $geocode->latitude ?? null,
                     'longitude' => $geocode->longitude ?? null,
                     'license_number' => $dispensary['record_number'],
@@ -73,9 +77,13 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 ]);
                 continue;
             }
+            info('Updating dispensary ' . $dispensary['license_name'] ?? null, [
+                'record_number' => $dispensary['record_number'],
+                'address' => $dispensary['address'],
+            ]);
 
             $dispo->update([
-                'name' => $dispensary['license_name'],
+                'name' => $dispensary['license_name'] ?? null,
                 'license_number' => $dispensary['record_number'],
                 'address' => empty($dispensary['address'])? null : $dispensary['address'],
                 'is_active' => $dispensary['status'] !== 'Closed',
@@ -83,8 +91,11 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 'official_license_type' => $dispensary['record_type'],
                 'license_type' => $this->filterLicenseType($dispensary['record_type']),
                 'is_recreational' => true,
-            ]);
-        }
+            ]); 
+            
+            $dispo = null;
+            $dispensary = null;
+         }
     }
 
     protected function filterLicenseType($licenseType)

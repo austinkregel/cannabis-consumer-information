@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
+use App\Models\Dispensary;
 use App\Models\Product;
 use App\Models\Recall;
 use Illuminate\Bus\Queueable;
@@ -23,28 +24,46 @@ class FetchRecalledProductsJob implements ShouldQueue
 
     public function handle(RecallPdfExtractionServiceContract $pdfExtractionService)
     {
+        file_put_contents($path = storage_path('/' . $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
         try {
-            file_put_contents($path = storage_path('/' . $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
-
-            $data = $pdfExtractionService->getPackageIdsFromPdfFile($path);
+            $data = $pdfExtractionService->getAllIdentifiers($path);
         } catch (\Exception $e) {
             info('Failed to fetch recalled products for ' . $this->recall->mra_public_notice_url, [
                 'exception' => $e->getMessage(),
             ]);
-            return;            
+            return;
         } finally {
             unlink($path);
         }
 
-        foreach ($data as $product) {
+        $data = collect($data)->groupBy(fn ($str) => str_starts_with($str, '1A') ? 'product_id' : 'license_number');
+
+        $products = $data->get('product_id', []);
+        $licenseNumbers = $data->get('license_number', []);
+
+        foreach ($products as $product) {
             $product = Product::firstOrCreate([
                 'id' => $product,
             ]);
 
-            if ($product->wasRecentlyCreated) {
+            if ($product->recalls()->where('id', $this->recall->id)->doesntExist()) {
                 $product->recalls()->attach($this->recall->id);
             }
         }
 
+        foreach ($licenseNumbers as $licenseNumber) {
+            $license = Dispensary::where('license_number', $licenseNumber)->first();
+            
+            if (empty($license)) {
+                $license = Dispensary::create([
+                    'license_number' => $licenseNumber,
+                    'name' => 'Likely a closed establishment'
+                ]);
+            }
+
+            if ($license->recalls()->where('id', $this->recall->id)->doesntExist()) {
+                $license->recalls()->attach($this->recall->id);
+            }
+        }
     }
 }

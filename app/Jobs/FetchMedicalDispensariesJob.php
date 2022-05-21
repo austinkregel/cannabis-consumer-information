@@ -38,25 +38,31 @@ class FetchMedicalDispensariesJob implements ShouldQueue
         $reader = Reader::createFromPath(storage_path('medical-dispensaries.csv'));
 
         $headers = [];
-        $dispensaries = [];
+        info('Updating medical dispensaries');
         foreach ($reader as $row) {
             if (empty($headers)) {
                 $headers = $row;
+                info('Found headers', ['headers' => $headers]);
                 continue;
             }
 
-            $data = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
-            unset($data['']);
-            $dispensaries[] = $data;
-        }
+            $dispensary = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
+            unset($dispensary['']);
 
-        foreach ($dispensaries as $dispensary) {
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
                 if (!empty($dispensary['address'])) {
-                    $geocode = $service->geocode($dispensary['address']);
+                    try {
+                        $geocode = $service->geocode($dispensary['address']);
+                    } catch (\Throwable $e) {
+                        $geocode = null;
+                    }
                 }
+                info('Creating dispensary ' . $dispensary['licensee_name'], [
+                    'record_number' => $dispensary['record_number'],
+                    'address' => $dispensary['address'],
+                ]);
                 Dispensary::create([
                     'name' => $dispensary['licensee_name'],
                     'latitude' => $geocode->latitude ?? null,
@@ -71,9 +77,22 @@ class FetchMedicalDispensariesJob implements ShouldQueue
                 ]);
                 continue;
             }
+            if (!empty($dispensary['address'])) {
+                try {
+                    $geocode = $service->geocode($dispensary['address']);
+                } catch (\Throwable $e) {
+                    $geocode = null;
+                }
+            }
+            info('Updating dispensary ' . $dispensary['licensee_name'], [
+                'record_number' => $dispensary['record_number'],
+                'address' => $dispensary['address'],
+            ]);
 
             $dispo->update([
                 'name' => $dispensary['licensee_name'],
+                'latitude' => $geocode->latitude ?? $dispo->latitude,
+                'longitude' => $geocode->longitude ?? $dispo->longitude,
                 'license_number' => $dispensary['record_number'],
                 'address' => $dispensary['address'],
                 'is_active' => $dispensary['status'] === 'Active',
