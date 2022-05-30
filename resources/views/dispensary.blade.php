@@ -1,10 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
       <div class="flex items-center space-x-3 mx-4">
-        <h3 class="text-gray-900 dark:text-gray-50 text-xl font-medium truncate">{{ $dispensary->name }}</h3>
+        <h3 class="text-slate-900 dark:text-slate-50 text-xl font-medium truncate">{{ $dispensary->name }}</h3>
         <span class="flex-shrink-0 inline-block px-2 py-0.5 text-green-800 dark:text-green-200 dark:bg-green-800 text-xs font-medium bg-green-100 rounded-full">{{ $dispensary->license_number }}</span>
       </div>
-      <p class="mt-1 text-gray-500 dark:text-gray-300 text-sm truncate mx-4">{{ $dispensary->official_license_type }}</p>
+      @if(auth()->check())
+      <div class="flex-1 flex items-center gap-2 justify-center md:justify-end h-0">
+        <favorite-button type="{{ get_class($dispensary) }}" :follow="{{ $dispensary }}" class="text-yellow-600 dark:text-yellow-400"></favorite-button>
+        <follow-button type="{{ get_class($dispensary) }}" :follow="{{ $dispensary }}" class="text-green-600 dark:text-green-400"></follow-button>
+        <like-button type="{{ get_class($dispensary) }}" :follow="{{ $dispensary }}" class="text-blue-600 dark:text-blue-400"></like-button>
+      </div>
+      @endif
+      <p class="mt-1 text-slate-500 dark:text-slate-300 text-sm truncate mx-4">{{ $dispensary->official_license_type }}</p>
     </x-slot>
     <x-slot name="scripts">
       
@@ -55,7 +62,7 @@
               <div id="map" class="w-full h-48 bg-white rounded-t"></div>
               @else
                 <div class="w-full h-48 bg-white rounded-t">
-                  <pre class="text-center text-gray-500 text-sm">{{json_encode($dispensary, JSON_PRETTY_PRINT)}}</pre>
+                  <pre class="text-center text-slate-500 text-sm">{{json_encode($dispensary, JSON_PRETTY_PRINT)}}</pre>
                 </div>
               @endif
               <div class="text-slate-700 dark:text-slate-200">
@@ -127,19 +134,19 @@
                     </div>
                 </div>
                 <div>
-                  <div class="-mt-px flex divide-x divide-gray-200">
+                  <div class="-mt-px flex divide-x divide-slate-200">
                     @if($dispensary->email)
                     <div class="w-0 flex-1 flex">
-                      <a href="mailto:{{ $dispensary->email }}" class="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 dark:text-gray-100 font-medium border border-transparent rounded-bl-lg hover:text-gray-500">
-                        <MailIcon class="w-5 h-5 text-gray-400 dark:text-gary-100" aria-hidden="true" />
+                      <a href="mailto:{{ $dispensary->email }}" class="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-slate-700 dark:text-slate-100 font-medium border border-transparent rounded-bl-lg hover:text-slate-500">
+                        <MailIcon class="w-5 h-5 text-slate-400 dark:text-gary-100" aria-hidden="true" />
                         <span class="ml-3">Email</span>
                       </a>
                     </div>
                     @endif
                     @if($dispensary->phone_number)
                     <div class="-ml-px w-0 flex-1 flex">
-                      <a href="tel:{{ $dispensary->phone_number }}" class="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 dark:text-gray-100 font-medium border border-transparent rounded-br-lg hover:text-gray-500">
-                        <PhoneIcon class="w-5 h-5 text-gray-400 dark:text-gary-100" aria-hidden="true" />
+                      <a href="tel:{{ $dispensary->phone_number }}" class="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-slate-700 dark:text-slate-100 font-medium border border-transparent rounded-br-lg hover:text-slate-500">
+                        <PhoneIcon class="w-5 h-5 text-slate-400 dark:text-gary-100" aria-hidden="true" />
                         <span class="ml-3">Call</span>
                       </a>
                     </div>
@@ -149,7 +156,7 @@
                   <div>
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 m-4">
                       @foreach ($dispensary->recalls as $recall)
-                      <div class="relative rounded-lg border border-gray-300 dark:border-slate-500 bg-white dark:bg-slate-600 dark:hover:bg-slate-700 px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 dark:hover:border-gray-700 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                      <div class="relative rounded-lg border border-slate-300 dark:border-slate-500 bg-white dark:bg-slate-600 dark:hover:bg-slate-700 px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-slate-400 dark:hover:border-slate-700 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                           <div class="flex-1 min-w-0">
                               <p class="text-lg font-medium text-slate-900 dark:text-slate-50 truncate">
                               {{ $recall->name }}

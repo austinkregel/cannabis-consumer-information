@@ -1,7 +1,7 @@
 
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight pl-6">
+        <h2 class="font-semibold text-xl text-slate-800 dark:text-slate-200 leading-tight pl-6">
             {{ __('Recalls') }}
         </h2>
     </x-slot>

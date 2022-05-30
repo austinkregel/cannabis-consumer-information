@@ -10,11 +10,28 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+window.activityLogSimplifier = function (activityLog) { 
+    const classes = ['created', 'updated', 'deleted', 'restored'];
+    const identifyClass = classes.indexOf(activityLog.description) > -1 ? activityLog.description : 'custom';
+    
+    if (identifyClass === 'custom') {
+        if (activityLog.description?.indexOf('recall') > -1) {
+            return 'recall';
+        }
+
+        if (activityLog.name) {
+            return activityLog.name;
+        }
+
+        if (activityLog.description === 'released') {
+            return 'released';
+        }
+
+        return 'custom';
+    }
+
+    return identifyClass;
+}
 
 // import Echo from 'laravel-echo';
 

@@ -19,7 +19,11 @@
     </style>
     </head>
     <body class="font-sans antialiased bg-slate-200 dark:bg-slate-500">
-        <div v-cloak class="min-h-screen" id="app" data-user="{{auth()->user()??'null'}}">
+        @php
+        $user = auth()->check() ? auth()->user() : null;
+        $user ? $user->load('likes.likeable', 'followings.followable', 'favorites.favoriteable') : 'null';    
+        @endphp
+        <div v-cloak class="min-h-screen" id="app" data-user="{{$user ?? 'null'}}">
             <div class="bg-slate-800 pb-32">
 
                 @include('layouts.navigation')

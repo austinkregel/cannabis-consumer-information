@@ -10,7 +10,7 @@ class SystemUserRepository implements SystemUserRepositoryContract
 {
     public function findOrFail(): User
     {
-        $user = User::firstWhere('name', 'Administrator');
+        $user = User::firstWhere('name', 'Michigan Cannabis Club');
         
         if (empty($user)) {
             throw new ModelNotFoundException('System User not found');

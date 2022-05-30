@@ -2,10 +2,19 @@
 
 namespace App\Providers;
 
+use App\Events\DispensaryHasBeenInvolvedInRecall;
+use App\Events\ProductHasBeenInvolvedInRecall;
+use App\Listeners\LogActivityListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Overtrue\LaravelFavorite\Events\Favorited;
+use Overtrue\LaravelFavorite\Events\Unfavorited;
+use Overtrue\LaravelFollow\Events\Followed;
+use Overtrue\LaravelFollow\Events\Unfollowed;
+use Overtrue\LaravelLike\Events\Liked;
+use Overtrue\LaravelLike\Events\Unliked;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +26,19 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        Liked::class => [],
+        Unliked::class => [],
+        Followed::class => [],
+        Unfollowed::class => [],
+        Favorited::class => [],
+        Unfavorited::class => [],
+        
+        DispensaryHasBeenInvolvedInRecall::class => [
+            LogActivityListener::class,
+        ],
+        ProductHasBeenInvolvedInRecall::class => [
+            LogActivityListener::class,
         ],
     ];
 

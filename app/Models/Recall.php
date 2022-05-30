@@ -5,10 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelFavorite\Traits\Favoriteable;
+use Overtrue\LaravelFollow\Traits\Followable;
+use Spatie\Activitylog\Traits\CausesActivity;
 
 class Recall extends Model
 {
-    use HasFactory;
+    use HasFactory, CausesActivity, Followable, Favoriteable;
 
     public $fillable = [
         'mra_public_notice_url',
@@ -17,6 +20,8 @@ class Recall extends Model
         'name',
         'original_name',
     ];
+
+    public $dates = ['published_at'];
 
     public $appends = ['pretty_published_at'];
 
