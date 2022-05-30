@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "codebyray/laravel-review-rateable": "^1.4",
         "doctrine/dbal": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/breeze": "^1.9",
@@ -16,7 +17,11 @@
         "laravel/tinker": "^2.7",
         "league/csv": "^9.8",
         "mikehaertl/php-pdftk": "^0.12.0",
-        "smalot/pdfparser": "^2.2"
+        "overtrue/laravel-favorite": "^5.0",
+        "overtrue/laravel-follow": "^5.0",
+        "overtrue/laravel-like": "^5.0",
+        "smalot/pdfparser": "^2.2",
+        "spatie/laravel-activitylog": "^4.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

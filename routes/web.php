@@ -2,6 +2,7 @@
 
 use App\Models\Dispensary;
 use App\Models\Recall;
+use App\Models\Strain;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
@@ -146,9 +147,19 @@ Route::get('/dispensary/{dispensary:license_number}', function (Dispensary $disp
     return view('dispensary', compact('dispensary'));
 })->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth'])->name('dashboard');
+
+Route::get('/products', fn() => view('dashboard'))->middleware(['auth']);
+Route::get('/strains', fn() => view('strains', [
+    'strains' => Strain::query()
+    ->where(function ($query) {
+        if (request()->has('q')) {
+            $query->where('name', 'like', '%'.request()->get('q').'%');
+        }
+    })
+    ->orderBy(request('sort', 'name'), request('order', 'asc'))
+    ->paginate(request('limit', 25), ['*'], 'page', request('page', 1)),
+]))->middleware(['auth']);
 
 Route::get('/recall/{recall:id}', function (App\Models\Recall $recall) {
     $recall->load('dispensaries', 'products');
