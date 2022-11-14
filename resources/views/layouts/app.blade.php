@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +21,7 @@
     <body class="font-sans antialiased bg-slate-200 dark:bg-slate-500">
         @php
         $user = auth()->check() ? auth()->user() : null;
-        $user ? $user->load('likes.likeable', 'followings.followable', 'favorites.favoriteable') : 'null';    
+        $user ? $user->load('likes.likeable', 'followings.followable', 'favorites.favoriteable') : 'null';
         @endphp
         <div v-cloak class="min-h-screen" id="app" data-user="{{$user ?? 'null'}}">
             <div class="bg-slate-800 pb-32">
@@ -40,7 +40,7 @@
             <main class="-mt-32">
                 {{ $slot }}
             </main>
-            
+
             <footer class="-mt-12">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pl-6">
                     <div class="bg-white dark:bg-slate-600 p-8 rounded-lg shadow text-slate-800 dark:text-slate-300">

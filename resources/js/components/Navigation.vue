@@ -24,8 +24,8 @@
                   </button>
 
                   <!-- Profile dropdown -->
-                  <Menu as="div" class="ml-3 relative">
-                    <div>
+                  <Menu as="div" class="ml-3 relative" v-if="user">
+                    <div >
                       <MenuButton class="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span class="sr-only">Open user menu</span>
                         <img class="h-8 w-8 rounded-full" src="user.imageUrl" alt="" />
