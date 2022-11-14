@@ -1,6 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -28,7 +29,7 @@ module.exports = {
               animation: {
                 'wave': 'wave 1s linear infinite',
               },
-        
+
         },
     },
 
