@@ -52,5 +52,13 @@
                 </x-button>
             </div>
         </form>
+
+        <x-slot:footer>
+            <div class="w-full flex items-center justify-center mt-6">
+                <a href="/register" class="text-sm text-blue-500 hover:text-blue-800 font-bold dark:text-slate-200 dark:hover:text-slate-300">
+                    Don't have an account?
+                </a>
+            </div>
+        </x-slot:footer>
     </x-auth-card>
 </x-guest-layout>

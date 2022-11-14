@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-slate-500" />
+                <x-application-logo class="w-20 h-20 fill-current text-slate-500 dark:text-slate-200" />
             </a>
         </x-slot>
 
@@ -46,14 +46,17 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-slate-600 hover:text-slate-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
                 <x-button class="ml-4">
                     {{ __('Register') }}
                 </x-button>
             </div>
         </form>
+        <x-slot:footer>
+            <div class="w-full flex items-center justify-center mt-6">
+                <a href="/login" class="text-sm text-blue-500 hover:text-blue-800 font-bold dark:text-slate-200 dark:hover:text-slate-300">
+                    Already have an account?
+                </a>
+            </div>
+        </x-slot:footer>
     </x-auth-card>
 </x-guest-layout>

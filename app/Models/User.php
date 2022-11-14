@@ -45,4 +45,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function booted()
+    {
+        parent::booted();
+        static::creating(function ($user) {
+            $user->image_url = 'https://www.gravatar.com/avatar/'.md5($user->email);
+            return $user;
+        });
+    }
 }

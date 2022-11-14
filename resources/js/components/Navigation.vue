@@ -19,26 +19,39 @@
               <div class="hidden md:block">
                 <div class="ml-4 flex items-center md:ml-6">
                   <button @click="toggleDarkMode" type="button" class="bg-slate-800 p-1 text-slate-400 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
-                    <span class="sr-only">switch to dark mode</span>
-                    <SunIcon class="h-6 w-6" aria-hidden="true" />
+                    <span class="sr-only">toggle dark mode</span>
+                      <SunIcon v-if="!darkMode" class="h-6 w-6" aria-hidden="true" />
+                      <MoonIcon v-else class="h-6 w-6" aria-hidden="true" />
                   </button>
 
                   <!-- Profile dropdown -->
-                  <Menu as="div" class="ml-3 relative" v-if="user">
+                  <Menu as="div" class="mx-3 relative" v-if="user">
                     <div >
                       <MenuButton class="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span class="sr-only">Open user menu</span>
-                        <img class="h-8 w-8 rounded-full" src="user.imageUrl" alt="" />
+                        <img class="h-8 w-8 rounded-full" :src="user.image_url" alt="" />
                       </MenuButton>
                     </div>
                     <transition enter-active-class="transition ease-out duration-200" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                      <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-slate-700 ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                          <a :href="item.href" :class="[active ? 'bg-slate-100' : '', 'block px-4 py-2 text-sm text-slate-700']">{{ item.name }}</a>
+                          <a :href="item.href" :class="[active ? 'bg-slate-100 dark:bg-slate-600' : '', 'block px-4 py-2 text-slate-700 dark:text-slate-300']">{{ item.name }}</a>
+                        </MenuItem>
+                        <MenuItem>
+                            <form method="post" action="/logout" id="logout">
+                                <button @click="logoutUser" type="button" class="w-full dark:hover:bg-slate-600 flex flex-wrap items-center gap-2 py-1 px-3 text-slate-400 dark:text-slate-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
+                                    <span class="sr-only">Logout</span>
+                                    <LogoutIcon class="h-4 w-4" aria-hidden="true" />
+                                    <span>Logout</span>
+                                </button>
+                            </form>
                         </MenuItem>
                       </MenuItems>
                     </transition>
                   </Menu>
+                  <a v-if="!user" href="/register" class="block px-4 py-2 text-slate-700 dark:text-slate-300 dark:bg-slate-600 bg-blue-600 rounded-lg py-1 px-2 mx-2">Register</a>
+                  <a v-if="!user" href="/login" class="block px-4 py-2 text-slate-700 dark:text-slate-300 border dark:border-slate-600 rounded-lg py-1 px-2">Login</a>
+
 
                 </div>
               </div>
@@ -64,7 +77,7 @@
 
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { BellIcon, XIcon, MenuIcon, SunIcon, MoonIcon } from '@heroicons/vue/outline'
+import { BellIcon, XIcon, MenuIcon, SunIcon, MoonIcon, LogoutIcon } from '@heroicons/vue/outline'
 export default {
     components: {
         Disclosure,
@@ -79,6 +92,7 @@ export default {
         XIcon,
         SunIcon,
         MoonIcon,
+        LogoutIcon,
     },
     name: 'Navigation',
     props: ['user'],
@@ -94,7 +108,8 @@ export default {
             ],
             userNavigation:[
               { name: 'Settings', href: '/settings' },
-            ]
+            ],
+            darkMode: JSON.parse(localStorage.getItem('dark_mode') ?? 'true'),
         }
     },
     methods: {
@@ -104,7 +119,21 @@ export default {
         toggleDarkMode() {
             localStorage.setItem('dark_mode', !JSON.parse(localStorage.getItem('dark_mode') ?? 'true'));
             document.dispatchEvent(new Event('dark_mode'));
+        },
+        logoutUser() {
+            axios.post('/logout')
+                .finally(res => window.location.replace('/'))
+        },
+        setDarkMode() {
+            this.darkMode = JSON.parse(localStorage.getItem('dark_mode') ?? 'true')
         }
     },
+    mounted() {
+        this.setDarkMode.bind(this);
+        document.addEventListener('dark_mode', this.setDarkMode)
+    },
+    unmounted() {
+        document.removeEventListener(this.setDarkMode);
+    }
 }
 </script>

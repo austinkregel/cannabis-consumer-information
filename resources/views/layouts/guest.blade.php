@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+        <script>
+            let darkMode = JSON.parse(localStorage.getItem('dark_mode') ?? 'true');
+            let htmlDoc = document.getElementsByTagName( 'html' )[0];
+            if (darkMode) {
+                htmlDoc.setAttribute('class', 'dark');
+            } else {
+                htmlDoc.setAttribute('class', '');
+            }
+            document.addEventListener('dark_mode', () => {
+                darkMode = JSON.parse(localStorage.getItem('dark_mode') ?? 'true');
+                htmlDoc = document.getElementsByTagName( 'html' )[0];
+                if (darkMode) {
+                    htmlDoc.setAttribute('class', 'dark');
+                } else {
+                    htmlDoc.setAttribute('class', '');
+                }
+            })
+        </script>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,7 +35,7 @@
     <body class="font-sans antialiased bg-slate-200 dark:bg-slate-500">
         <div>
             {{ $slot }}
-        </div>  
+        </div>
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
         {!! $scripts ?? '' !!}

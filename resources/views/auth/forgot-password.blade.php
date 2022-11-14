@@ -6,7 +6,7 @@
             </a>
         </x-slot>
 
-        <div class="mb-4 text-sm text-slate-600">
+        <div class="mb-4 text-sm text-slate-600 dark:text-slate-300">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
         </div>
 
@@ -32,5 +32,14 @@
                 </x-button>
             </div>
         </form>
+
+
+        <x-slot:footer>
+            <div class="w-full flex items-center justify-center mt-6">
+                <a href="/login" class="text-sm text-blue-500 hover:text-blue-800 font-bold dark:text-blue-200 dark:hover:text-blue-300">
+                    Did you remember your password?
+                </a>
+            </div>
+        </x-slot:footer>
     </x-auth-card>
 </x-guest-layout>
