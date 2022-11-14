@@ -37,7 +37,6 @@
                             <div class="flex-shrink-0 flex items-center">
                                 <ExclamationIcon class="mr-1 h-5 w-5 text-yellow-400" aria-hidden="true" />
                                 <a target="_blanket" class="text-sm font-medium text-yellow-800 dark:text-yellow-50 underline" :href="recall.mra_public_notice_url">{{recall.name}}</a>
-
                             </div>
                             <div class="ml-6">
                                 <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-50">

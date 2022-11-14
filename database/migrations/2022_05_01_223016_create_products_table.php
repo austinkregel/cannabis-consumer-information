@@ -17,11 +17,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->string('id')->unique()->index();
+            $table->id();
+            $table->string('product_id')->unique()->index();
             $table->string('name')->nullable();
-            $table->foreignIdFor(Dispensary::class)->nullable();
-            $table->foreignIdFor(Tester::class)->nullable();
-            $table->foreignIdFor(Grower::class)->nullable();
+            $table->foreignIdFor(Dispensary::class, 'dispensary_id')->nullable();
+            $table->foreignIdFor(Dispensary::class, 'grower_id')->nullable();
+            $table->foreignIdFor(Dispensary::class, 'tester_id')->nullable();
             $table->timestamps();
         });
     }

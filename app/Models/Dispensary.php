@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelFavorite\Traits\Favoriteable;
+use Overtrue\LaravelFollow\Traits\Followable;
+use Overtrue\LaravelLike\Traits\Likeable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Dispensary extends Model
 {
-    use HasFactory;
+    use HasFactory, Followable, Likeable, Favoriteable, LogsActivity;
 
     protected $fillable = [
         'name',
@@ -29,6 +34,13 @@ class Dispensary extends Model
     public $dates = [
         'license_expires_at',
     ];
+
+    public function getActivitylogOptions(): LogOptions 
+    {
+        $config = new LogOptions;
+
+        return $config;
+    }
 
     public function recalls()
     {

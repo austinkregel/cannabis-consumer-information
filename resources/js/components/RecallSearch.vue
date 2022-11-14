@@ -41,7 +41,7 @@
                             </div>
                             <div class="ml-6">
                                 <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-50">
-                                    <p v-for="product in recall.products" :key="product.id">{{product.name}} <span v-if="product.name">&mdash;</span> {{product.id}}</p>
+                                    <p v-for="product in recall.products" :key="product.product_id">{{product.name}} <span v-if="product.name">&mdash;</span> {{product.product_id}}</p>
                                 </div>
                                 <div class="w-full text-yellow-700 dark:text-yellow-50 mt-2 text-sm">Published {{recall.pretty_published_at}}</div>
                             </div>

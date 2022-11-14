@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         User::create([
-            'name' => 'Administrator',
+            'name' => 'Michigan Cannabis Club',
             'email' => 'info@michigancannabis.club',
             'password' => 'never used',
         ]);

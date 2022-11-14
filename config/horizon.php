@@ -174,7 +174,7 @@ return [
             'maxJobs' => 0,
             'memory' => 512,
             'tries' => 1,
-            'timeout' => 600,
+            'timeout' => 6000,
             'nice' => 0,
         ],
     ],

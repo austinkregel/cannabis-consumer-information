@@ -28,7 +28,7 @@ class SyncAllRecalledProducts implements ShouldQueue
 
             foreach ($paginator->items() as $recall) {
                 $dispatcher->dispatch(new FetchRecalledProductsJob($recall));
-            };
+            }
         } while ($paginator->hasMorePages());
     }
 }

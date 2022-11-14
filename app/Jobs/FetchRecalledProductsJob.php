@@ -2,7 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Contracts\Repositories\SystemUserRepositoryContract;
 use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
+use App\Events\DispensaryHasBeenInvolvedInRecall;
+use App\Events\ProductHasBeenInvolvedInRecall;
 use App\Models\Dispensary;
 use App\Models\Product;
 use App\Models\Recall;
@@ -22,9 +25,11 @@ class FetchRecalledProductsJob implements ShouldQueue
     {
     }
 
-    public function handle(RecallPdfExtractionServiceContract $pdfExtractionService)
+    public function handle(RecallPdfExtractionServiceContract $pdfExtractionService, SystemUserRepositoryContract $systemUserRepository)
     {
-        file_put_contents($path = storage_path('/' . $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
+        $systemUser = $systemUserRepository->findOrFail();
+        auth()->login($systemUser);
+        file_put_contents($path = storage_path( $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
         try {
             $data = $pdfExtractionService->getAllIdentifiers($path);
         } catch (\Exception $e) {
@@ -43,17 +48,18 @@ class FetchRecalledProductsJob implements ShouldQueue
 
         foreach ($products as $product) {
             $product = Product::firstOrCreate([
-                'id' => $product,
+                'product_id' => $product,
             ]);
 
             if ($product->recalls()->where('id', $this->recall->id)->doesntExist()) {
                 $product->recalls()->attach($this->recall->id);
+                event(new ProductHasBeenInvolvedInRecall($product, $this->recall));
             }
         }
 
         foreach ($licenseNumbers as $licenseNumber) {
             $license = Dispensary::where('license_number', $licenseNumber)->first();
-            
+
             if (empty($license)) {
                 $license = Dispensary::create([
                     'license_number' => $licenseNumber,
@@ -63,7 +69,9 @@ class FetchRecalledProductsJob implements ShouldQueue
 
             if ($license->recalls()->where('id', $this->recall->id)->doesntExist()) {
                 $license->recalls()->attach($this->recall->id);
+                event(new DispensaryHasBeenInvolvedInRecall($license, $this->recall));
             }
         }
+        auth()->logout();
     }
 }

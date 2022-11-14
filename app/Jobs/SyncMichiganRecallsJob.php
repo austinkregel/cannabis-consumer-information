@@ -18,11 +18,13 @@ class SyncMichiganRecallsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public const MICHIGAN_RECALLS_URL = 'https://www.michigan.gov/mra/bulletins';
+    public const MICHIGAN_RECALLS_URL = 'https://www.michigan.gov/cra/bulletins';
 
     public function handle(CrawlerContract $crawler, SystemUserRepositoryContract $systemUserRepository)
     {
         $systemUser = $systemUserRepository->findOrFail();
+        auth()->login($systemUser);
+
         $pdfsOnSite = $crawler->crawl(static::MICHIGAN_RECALLS_URL);
     
         $recalls = array_filter($pdfsOnSite, function($pdf) {
@@ -49,5 +51,6 @@ class SyncMichiganRecallsJob implements ShouldQueue
             ]);
         }
 
+        auth()->logout();
     }
 }

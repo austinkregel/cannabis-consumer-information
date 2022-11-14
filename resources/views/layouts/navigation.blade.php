@@ -1,1 +1,1 @@
-<navigation></navigation>
+<navigation :user="{{ auth()->user() ?? 'null'  }}"></navigation>

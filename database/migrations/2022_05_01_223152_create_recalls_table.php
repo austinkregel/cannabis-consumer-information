@@ -34,22 +34,13 @@ return new class extends Migration
             $table->timestamps();
         });
         Schema::create('recalled_products', function (Blueprint $table){
-            $table->string('product_id');
+            $table->foreignIdFor(Product::class);
             $table->foreignIdFor(Recall::class);
 
             $table->unique(['product_id', 'recall_id']);
-            $table->foreign('product_id')->references('id')->on('products');
         });
         Schema::create('recalled_dispensaries', function (Blueprint $table){
             $table->foreignIdFor(Dispensary::class);
-            $table->foreignIdFor(Recall::class);
-        });
-        Schema::create('recalled_growers', function (Blueprint $table){
-            $table->foreignIdFor(Grower::class);
-            $table->foreignIdFor(Recall::class);
-        });
-        Schema::create('recalled_testers', function (Blueprint $table){
-            $table->foreignIdFor(Tester::class);
             $table->foreignIdFor(Recall::class);
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Contracts\Repositories\SystemUserRepositoryContract;
 use App\Contracts\Services\GoogleMapsGeocodingServiceContract;
 use App\Models\Dispensary;
 use Carbon\Carbon;
@@ -33,8 +34,11 @@ class FetchMedicalDispensariesJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle(GoogleMapsGeocodingServiceContract $service)
+    public function handle(GoogleMapsGeocodingServiceContract $service, SystemUserRepositoryContract $systemUserRepository)
     {
+        $systemUser = $systemUserRepository->findOrFail();
+        auth()->login($systemUser);
+
         $reader = Reader::createFromPath(storage_path('medical-dispensaries.csv'));
 
         $headers = [];
@@ -102,6 +106,7 @@ class FetchMedicalDispensariesJob implements ShouldQueue
                 'is_recreational' => false,
             ]);
         }
+        auth()->logout();
     }
 
     protected function filterLicenseType($licenseType)

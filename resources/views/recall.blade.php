@@ -35,9 +35,25 @@ function get_center($coords)
 @endphp
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight pl-6">
-            {{ $recall->name }}
-        </h2>
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-slate-800 dark:text-slate-200 leading-tight pl-6">
+                {{ $recall->name }}
+            </h2>
+            <div>
+                <follow-button 
+                    v-if="$store.getters.user?.id"
+                    type="App\Models\Recall" 
+                    :follow="{{$recall}}" 
+                    class="text-green-600 dark:text-green-400"
+                ></follow-button>    
+                <favorite-button 
+                    v-if="$store.getters.user?.id"
+                    type="App\Models\Recall" 
+                    :follow="{{$recall}}" 
+                    class="text-yellow-600 dark:text-yellow-400"
+                ></favorite-button>
+            </div>
+        </div>
     </x-slot>
 
     <x-slot name="scripts">
@@ -104,7 +120,7 @@ function get_center($coords)
                 <div class="h-32 overflow-y-scroll border border-slate-200 dark:border-slate-500 p-4 rounded-lg">
                 @foreach ($recall->products as $product)
                     <div>
-                        {{ $product->id }}   
+                        {{ $product->product_id }}   
                         {{ $product->name }}   
                     </div>
 
@@ -115,7 +131,7 @@ function get_center($coords)
             <div class="text-xl mt-4 mb-2">Impacted Establishments</div>
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 @foreach ($recall->dispensaries as $dispensary)
-                <div class="relative rounded-lg border border-gray-300 dark:border-slate-500 bg-white dark:bg-slate-600 dark:hover:bg-slate-700 px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 dark:hover:border-gray-700 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                <div class="relative rounded-lg border border-slate-300 dark:border-slate-500 bg-white dark:bg-slate-600 dark:hover:bg-slate-700 px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-slate-400 dark:hover:border-slate-700 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                     <div class="flex-1 min-w-0">
                         <p class="text-lg font-medium text-slate-900 dark:text-slate-50 truncate">
                         {{ $dispensary->name }}
