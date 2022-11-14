@@ -29,7 +29,7 @@ class FetchRecalledProductsJob implements ShouldQueue
     {
         $systemUser = $systemUserRepository->findOrFail();
         auth()->login($systemUser);
-        file_put_contents($path = storage_path('/' . $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
+        file_put_contents($path = storage_path( $this->recall->id . '.pdf'), file_get_contents($this->recall->mra_public_notice_url));
         try {
             $data = $pdfExtractionService->getAllIdentifiers($path);
         } catch (\Exception $e) {
@@ -59,7 +59,7 @@ class FetchRecalledProductsJob implements ShouldQueue
 
         foreach ($licenseNumbers as $licenseNumber) {
             $license = Dispensary::where('license_number', $licenseNumber)->first();
-            
+
             if (empty($license)) {
                 $license = Dispensary::create([
                     'license_number' => $licenseNumber,
