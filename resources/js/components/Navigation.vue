@@ -18,9 +18,9 @@
               </div>
               <div class="hidden md:block">
                 <div class="ml-4 flex items-center md:ml-6">
-                  <button type="button" class="bg-slate-800 p-1 text-slate-400 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
-                    <span class="sr-only">View notifications</span>
-                    <BellIcon class="h-6 w-6" aria-hidden="true" />
+                  <button @click="toggleDarkMode" type="button" class="bg-slate-800 p-1 text-slate-400 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
+                    <span class="sr-only">switch to dark mode</span>
+                    <SunIcon class="h-6 w-6" aria-hidden="true" />
                   </button>
 
                   <!-- Profile dropdown -->
@@ -64,7 +64,7 @@
 
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { BellIcon, XIcon, MenuIcon } from '@heroicons/vue/outline'
+import { BellIcon, XIcon, MenuIcon, SunIcon, MoonIcon } from '@heroicons/vue/outline'
 export default {
     components: {
         Disclosure,
@@ -77,6 +77,8 @@ export default {
         BellIcon,
         MenuIcon,
         XIcon,
+        SunIcon,
+        MoonIcon,
     },
     name: 'Navigation',
     props: ['user'],
@@ -99,6 +101,10 @@ export default {
         toggle () {
             this.open = ! this.open
         },
+        toggleDarkMode() {
+            localStorage.setItem('dark_mode', !JSON.parse(localStorage.getItem('dark_mode') ?? 'true'));
+            document.dispatchEvent(new Event('dark_mode'));
+        }
     },
 }
 </script>
