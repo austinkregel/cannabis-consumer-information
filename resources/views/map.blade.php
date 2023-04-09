@@ -9,7 +9,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link href="{{ url('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <style>
         body {
             font-family: 'Nunito', sans-serif;
@@ -18,7 +18,77 @@
 </head>
 <body class="antialiased h-screen w-full">
 <div id="map" class="bg-white h-screen w-full" ></div>
-
+<diiv class="fixed left-0 bottom-0 m-4  p-2 rounded-lg z-50 bg-white">
+    <div>Legend</div>
+    <div class="flex">
+        <img src="/microbusiness.png" alt="microbusiness"/>
+        <div>microbusiness</div>
+    </div>
+    <div class="flex">
+        <img src="/sole_proprietor.png" alt="sole_proprietor"/>
+        <div>sole_proprietor</div>
+    </div>
+    <div class="flex">
+        <img src="/rec.png" alt="rec"/>
+        <div>rec</div>
+    </div>
+    <div class="flex">
+        <img src="/processor.png" alt="processor"/>
+        <div>processor</div>
+    </div>
+    <div class="flex">
+        <img src="/transporter.png" alt="transporter"/>
+        <div>transporter</div>
+    </div>
+    <div class="flex">
+        <img src="/prequalification.png" alt="prequalification"/>
+        <div>prequalification</div>
+    </div>
+    <div class="flex">
+        <img src="/temporary_event.png" alt="temporary_event"/>
+        <div>temporary_event</div>
+    </div>
+    <div class="flex">
+        <img src="/provisioning.png" alt="provisioning"/>
+        <div>provisioning</div>
+    </div>
+    <div class="flex">
+        <img src="/retailer.png" alt="retailer"/>
+        <div>retailer</div>
+    </div>
+    <div class="flex">
+        <img src="/individual.png" alt="individual"/>
+        <div>individual</div>
+    </div>
+    <div class="flex">
+        <img src="/medical.png" alt="medical"/>
+        <div>medical</div>
+    </div>
+    <div class="flex">
+        <img src="/grower.png" alt="grower"/>
+        <div>grower</div>
+    </div>
+    <div class="flex">
+        <img src="/consumption.png" alt="consumption"/>
+        <div>consumption</div>
+    </div>
+    <div class="flex">
+        <img src="/complicance.png" alt="complicance"/>
+        <div>complicance</div>
+    </div>
+    <div class="flex">
+        <img src="/event.png" alt="event"/>
+        <div>event</div>
+    </div>
+    <div>
+        <img src="/compliance.png" alt="compliance"/>
+        <div>compliance</div>
+    </div>
+    <div class="flex">
+        <img src="/adult_use_entity.png" alt="adult_use_entity"/>
+        <div>adult_use_entity</div>
+    </div>
+</diiv>
 <script>
     window.initMap = () => {
         const infoWindow = new google.maps.InfoWindow();

@@ -20,6 +20,22 @@ Artisan::command('sync-recalls', function () {
     dispatch_sync(new SyncAllRecalledProducts);
 })->describe('Sync recalls for all dispensaries');
 
+Artisan::command('make:service-user', function () {
+    \App\Models\User::create([
+        'name' => 'Michigan Cannabis Club',
+        'email' => 'cannabisclub@kregel.email',
+        'password' => bcrypt(Str::random(16)),
+    ]);
+})->describe('Sync recalls for all dispensaries');
+
+Artisan::command('make:admin-user', function () {
+    \App\Models\User::create([
+        'name' => 'Admin',
+        'email' => 'austinkregel@gmail.com',
+        'password' => bcrypt('000000'),
+    ]);
+})->describe('Sync recalls for all dispensaries');
+
 Artisan::command('test-leafly', function () {
     $service = new LeaflyService(new Client);
 
@@ -30,7 +46,7 @@ Artisan::command('test-leafly', function () {
 
         foreach ($paginator->items() as $strain) {
             $localStrain = Strain::firstWhere('name', $strain->name);
-    
+
             if (empty($localStrain)) {
                 $localStrain = Strain::create([
                     'name' => $strain->name,
@@ -51,7 +67,7 @@ Artisan::command('test-leafly', function () {
                 'aprox_thc' => $thcAvg,
                 'aprox_cbd' => $cbdAvg,
             ]);
-    
+
             $this->info(sprintf('%s (%s)', $localStrain->name, $localStrain->slug));
         }
     } while ($paginator->hasMorePages());
@@ -87,14 +103,14 @@ Artisan::command('geocode', function () {
 
 Artisan::command('seed-everything', function() {
     $this->info('Seeding everything');
-    dispatch(new FetchMedicalDispensariesJob);
+    dispatch_sync(new FetchMedicalDispensariesJob);
     $this->info('Finished Medical, moving to recreational');
-    dispatch(new FetchRecreationalDispensariesJob);
-    $this->info('Syncing recall jobs');
-    dispatch(new SyncMichiganRecallsJob);
-    $this->info('Parsing the PDFs');
-    dispatch(new SyncAllRecalledProducts);
-    $this->info('Geocoding missed dispensaries');
+    dispatch_sync(new FetchRecreationalDispensariesJob);
+//    $this->info('Syncing recall jobs');
+//    dispatch_sync(new SyncMichiganRecallsJob);
+//    $this->info('Parsing the PDFs');
+//    dispatch_sync(new SyncAllRecalledProducts);
+//    $this->info('Geocoding missed dispensaries');
     dispatch_sync(new GeocodeDispensariesJob);
     $this->info('Done');
 });

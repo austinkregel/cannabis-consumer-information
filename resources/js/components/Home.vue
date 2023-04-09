@@ -149,6 +149,11 @@ export default {
             ]
 
         }
+    },
+    methods: {
+        date(datestring) {
+            return dayjs(datestring).format('MMMM JJ, YYYY');
+        }
     }
 }
 </script>
