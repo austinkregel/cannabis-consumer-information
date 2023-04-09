@@ -119,6 +119,7 @@ class FetchMedicalDispensariesJob implements ShouldQueue
             'Individual Prequalification' => 'individual',
             'Safety Compliance - License' => 'compliance',
             'Secure Transporter - License' => 'transporter',
+            default => throw new \Exception('Unknown license type: '. $licenseType)
         };
     }
 }

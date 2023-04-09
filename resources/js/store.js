@@ -27,7 +27,7 @@ export default createStore({
             commit('setUser', response.data);
         },
         async fetchRecalls({ commit }) {
-            const response = await axios.get('/api/recalls');
+            const response = await axios.get('/api/recalls?lilmit=100');
             commit('setRecalls', response.data);
         },
         async fetchProducts({ commit }) {

@@ -56,7 +56,7 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
 
             if (!$dispo) {
                 if (!empty($dispensary['address'])) {
-                    try { 
+                    try {
                         $geocode = $service->geocode($dispensary['address']);
                     } catch (\Throwable $e) {
                         $geocode = null;
@@ -94,8 +94,8 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                 'official_license_type' => $dispensary['record_type'],
                 'license_type' => $this->filterLicenseType($dispensary['record_type']),
                 'is_recreational' => true,
-            ]); 
-            
+            ]);
+
             $dispo = null;
             $dispensary = null;
          }
@@ -107,18 +107,17 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
     {
         return match ($licenseType) {
             'Class A Marihuana Grower - License', 'Class B Marihuana Grower - License', 'Class C Marihuana Grower - License', 'Excess Marihuana Grower - License' => 'grower',
-
             'Adult-Use Entity Registration - License' => 'adult_use_entity',
-
             'Marihuana Processor - License' => 'processor',
             'Marihuana Event Organizer - License' => 'event',
             'Marihuana Retailer - License' => 'retailer',
             'Marihuana Secure Transporter - License' => 'transporter',
-            'Marihuana Microbusiness - License' => 'microbusiness',
+            'Class A Marihuana Microbusiness - License', 'Marihuana Microbusiness - License' => 'microbusiness',
             'Temporary Marihuana Event - License' => 'temporary_event',
             'Designated Consumption Establishment - License' => 'consumption',
-            'Marihuana Safety Compliance Facility - License' => 'complicance',
+            'Marihuana Safety Compliance Facility - License' => 'compliance',
             'Sole Proprietor Registration - License' => 'sole_proprietor',
+            default => throw new \Exception('Unknown license type: '. $licenseType)
         };
     }
 }

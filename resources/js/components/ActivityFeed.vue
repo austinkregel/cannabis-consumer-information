@@ -13,7 +13,7 @@
       </div>
       <div class="flex items-center gap-3 text-black dark:text-slate-300">
         <span :class="[
-            'bg-yellow-500 dark:bg-yellow-600',  
+            'bg-yellow-500 dark:bg-yellow-600',
             'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white dark:ring-slate-600'
             ]">
           <ActivityFeedIcons :activity="'recall'" class="h-6 w-6 text-white" aria-hidden="true" />
@@ -51,12 +51,12 @@
     <ul role="list" class="-mb-8">
       <li v-for="(event, eventIdx) in data" :key="event.id">
         <div class="relative pb-8">
-          <span v-if="eventIdx !== data.length - 1" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-slate-200 dark:bg-slate-700" aria-hidden="true" />
+          <span v-if="eventIdx !== data.length - 1" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-slate-200 dark:bg-slate-800" aria-hidden="true" />
           <div class="relative flex space-x-3">
             <div>
               <span :class="[
-                  activityLogSimplifier(event) === 'released' ? 'bg-fuchsia-500 dark:bg-fuchsia-600' :'',  
-                  activityLogSimplifier(event) === 'recall' ? 'bg-yellow-500 dark:bg-yellow-600' :'',  
+                  activityLogSimplifier(event) === 'released' ? 'bg-fuchsia-500 dark:bg-fuchsia-600' :'',
+                  activityLogSimplifier(event) === 'recall' ? 'bg-yellow-500 dark:bg-yellow-600' :'',
                   activityLogSimplifier(event) === 'created' ? 'bg-sky-500 dark:bg-sky-600': '',
                   activityLogSimplifier(event) === 'updated' ? 'bg-green-500 dark:bg-green-600': '',
                   activityLogSimplifier(event) === 'deleted' ? 'bg-red-500 dark:bg-red-600': '',
@@ -67,16 +67,16 @@
             </div>
             <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400">
+                <p class="text-slate-500 dark:text-slate-400">
                   <a v-if="event.causer && event.causer_type === 'App\\Models\\Recall'" :href="'/recall/'+event.causer.id" class="font-medium text-slate-900 dark:text-slate-100">{{ event.causer.name }}</a>
                   <span v-else-if="event.causer" class="font-medium text-slate-900 dark:text-slate-100">{{ event.causer.name }}</span>
-                  {{ activityLogSimplifier(event) }} 
+                  {{ activityLogSimplifier(event) }}
                   <a v-if="event.subject && event.subject_type === 'App\\Models\\Dispensary'"  :href="'/dispensary/'+event.subject.license_number" class="d font-medium text-slate-900 dark:text-slate-100">{{ event.subject?.name }}</a>
                   <span v-else-if="event.subject && event.subject_type !== 'App\\Models\\Product'" class="a font-medium text-slate-900 dark:text-slate-100">{{ event.subject?.product_id ?? event.subject?.name ?? event.subject }}</span>
                   <span v-else-if="event.subject" class="s font-medium text-slate-900 dark:text-slate-100">{{ event.subject }}</span>
                 </p>
               </div>
-              <div class="text-right text-sm whitespace-nowrap text-slate-500 dark:text-slate-400">
+              <div class="text-right whitespace-nowrap text-slate-500 dark:text-slate-400">
                 <time :datetime="event.date">{{ date(event.date) }}</time>
               </div>
             </div>
@@ -180,7 +180,7 @@ activityLogSimplifier
                 }
             }))
             .sort((a, b) => {
-                return dayjs(b.date).unix() 
+                return dayjs(b.date).unix()
                      - dayjs(a.date).unix();
             });
         }
@@ -195,7 +195,7 @@ activityLogSimplifier
         date(date) {
             return dayjs(date).format('MMMM D, YYYY');
         },
-    
+
     },
 
     mounted() {

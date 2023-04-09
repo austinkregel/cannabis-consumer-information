@@ -26,9 +26,12 @@ class SyncMichiganRecallsJob implements ShouldQueue
         auth()->login($systemUser);
 
         $pdfsOnSite = $crawler->crawl(static::MICHIGAN_RECALLS_URL);
-    
+
         $recalls = array_filter($pdfsOnSite, function($pdf) {
-            return stripos($pdf['title'], 'recall') !== false;
+            return stripos($pdf['link'], 'health-') !== false
+                || stripos($pdf['link'], '-safety') !== false
+                || stripos($pdf['link'], 'recall') !== false
+                || stripos($pdf['link'], 'consumer') !== false;
         });
 
         info('Found ' . count($recalls) . ' recall pdfs on Michigan state site.');

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flow-root bg-white dark:bg-slate-600 rounded shadow px-4 py-6">
+        <div class="flow-root bg-white dark:bg-slate-800 rounded shadow px-4 py-6">
             <ul role="list" class="-my-5 divide-y divide-slate-200 dark:divide-slate-700">
                 <li v-for="thing in things" :key="thing.id" class="py-4">
                     <slot :item="thing">{{ thing }}</slot>

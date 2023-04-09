@@ -18,7 +18,7 @@
                   @{{ item.official_license_type }}
                 </p>
                 <p class="flex items-center text-base text-slate-500 dark:text-slate-300">
-                  <svg class="w-6 h-6 mr-2 text-blue-600 dark:text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>  
+                  <svg class="w-6 h-6 mr-2 text-blue-600 dark:text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                   <span class="flex-1 truncate">@{{ item.address }}</span>
                 </p>
               </div>
@@ -26,8 +26,8 @@
                 <favorite-button v-if="$store.getters.user?.id" type="App\Models\Dispensary" :follow="item" class="text-yellow-600 dark:text-yellow-400"></favorite-button>
                 <follow-button v-if="$store.getters.user?.id" type="App\Models\Dispensary" :follow="item" class="text-green-600 dark:text-green-400"></follow-button>
                 <like-button v-if="$store.getters.user?.id" type="App\Models\Dispensary" :follow="item" class="text-blue-600 dark:text-blue-400"></like-button>
-         
-                <a :href="'/dispensary/' + item.license_number" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-slate-300 dark:border-slate-600 text-sm leading-5 font-medium rounded-full text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
+
+                <a :href="'/dispensary/' + item.license_number" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-slate-300 dark:border-slate-600 leading-5 font-medium rounded-full text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
                   View
                 </a>
               </div>
