@@ -95,7 +95,13 @@
           </typeable-list>
         </div>
         <div v-else-if="activeRoute === '/products'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
-          <product-tracker />
+            <div class="text-2xl dark:text-slate-50 text-slate-700">
+                Tracking ({{ $store.getters.user.products?.length ?? 0 }})
+            </div>
+
+            <product-tracker />
+
+            <div>tracked product list</div>
         </div>
           <div v-else-if="activeRoute === '/settings'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
               <div class="shadow rounded-lg bg-slate-100 dark:bg-slate-800">

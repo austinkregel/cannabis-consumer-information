@@ -35,7 +35,19 @@
                     <div class="grid grid-cols-6 gap-4 pt-6" v-for="product in decoded" :key="product.id">
                         <div class="col-span-6 sm:col-span-4">
                             <label for="product_id" class="block font-medium text-slate-700 dark:text-slate-200">Product ID (usually called a Metrc Tag, or a source tag)</label>
-                            <input v-model="product.product_id" type="text" name="product_id" id="product_id" class="dark:bg-slate-500 dark:border-slate-500 mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full dark:text-slate-200 shadow-sm sm:border-slate-300 rounded-md" />
+                            <input
+                                   v-model="product.product_id"
+                                   type="text"
+                                   name="product_id"
+                                   id="product_id"
+                                   class="focus:ring-indigo-500  block w-full shadow-sm rounded-md"
+                                   :class="[(product.product_id ? !product.product_id.startsWith('1A') : false) ? 'border-red-500 dark:border-red-600 text-red-500 dark:text-red-400 dark:bg-red-900' : 'dark:bg-slate-500 sm:border-slate-300 dark:border-slate-500 mt-2 focus:border-indigo-500 dark:text-slate-200']"
+                            />
+                            <div v-if="product.product_id ? !product.product_id.startsWith('1A') : false"
+                                 :class="[(product.product_id ? !product.product_id.startsWith('1A') : false) ? 'text-red-500 dark:text-red-400 ' : 'dark:text-slate-200']"
+                            >
+                                This is not a valid Metrc Tag, please take another look, they start with "1A"
+                            </div>
                         </div>
                         <div class="col-span-6 sm:col-span-4">
                             <label class="block font-medium text-slate-700 dark:text-slate-300 mb-2">What was the primary strain? (Optional)</label>
@@ -174,7 +186,11 @@ export default defineComponent({
             })
         },
         saveProducts() {
-            console.log(this.decoded)
+            console.log(this.decoded.map(productToTrack => {
+
+
+                return productToTrack;
+            }))
         },
     },
     watch: {
