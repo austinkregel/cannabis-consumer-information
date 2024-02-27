@@ -48,12 +48,12 @@ class IngestDispensariesJob implements ShouldQueue
                         $geocode = null;
                     }
                 }
-                info('Creating dispensary ' . $dispensary['licensee_name'], [
+                info('Creating dispensary '.$dispensary['licensee_name'] ?? null, [
                     'record_number' => $dispensary['record_number'],
                     'address' => $dispensary['address'],
                 ]);
                 Dispensary::create([
-                    'name' => $dispensary['licensee_name'],
+                    'name' => $dispensary['licensee_name'] ?? null,
                     'latitude' => $geocode->latitude ?? null,
                     'longitude' => $geocode->longitude ?? null,
                     'license_number' => $dispensary['record_number'],
