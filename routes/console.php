@@ -84,7 +84,7 @@ Artisan::command('test', function () {
     $this->info(sprintf('%d new strains', $diff->count()));
 
     foreach ($diff as $strain) {
-        $localStrain = Strain::firstWhere('name', $strain);
+        $localStrain = Strain::firstWhere('slug', Str::slug($strain));
 
         if (empty($localStrain)) {
             $localStrain = Strain::create([
