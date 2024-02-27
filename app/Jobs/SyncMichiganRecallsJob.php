@@ -20,6 +20,11 @@ class SyncMichiganRecallsJob implements ShouldQueue
 
     public const MICHIGAN_RECALLS_URL = 'https://www.michigan.gov/cra/bulletins';
 
+    public function __construct()
+    {
+        $this->onQueue('cannabis');
+    }
+
     public function handle(CrawlerContract $crawler, SystemUserRepositoryContract $systemUserRepository)
     {
         $systemUser = $systemUserRepository->findOrFail();
