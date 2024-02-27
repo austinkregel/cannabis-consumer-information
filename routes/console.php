@@ -102,15 +102,15 @@ Artisan::command('geocode', function () {
 });
 
 Artisan::command('seed-everything', function() {
-    $this->info('Seeding everything');
-    dispatch_sync(new FetchMedicalDispensariesJob);
-    $this->info('Finished Medical, moving to recreational');
-    dispatch_sync(new FetchRecreationalDispensariesJob);
-//    $this->info('Syncing recall jobs');
-//    dispatch_sync(new SyncMichiganRecallsJob);
-//    $this->info('Parsing the PDFs');
-//    dispatch_sync(new SyncAllRecalledProducts);
-//    $this->info('Geocoding missed dispensaries');
+//    $this->info('Seeding everything');
+//    dispatch_sync(new FetchMedicalDispensariesJob);
+//    $this->info('Finished Medical, moving to recreational');
+//    dispatch_sync(new FetchRecreationalDispensariesJob);
+    $this->info('Syncing recall jobs');
+    dispatch_sync(new SyncMichiganRecallsJob);
+    $this->info('Parsing the PDFs');
+    dispatch_sync(new SyncAllRecalledProducts);
+    $this->info('Geocoding missed dispensaries');
     dispatch_sync(new GeocodeDispensariesJob);
     $this->info('Done');
 });
