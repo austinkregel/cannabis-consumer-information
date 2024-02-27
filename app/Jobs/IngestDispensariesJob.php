@@ -36,12 +36,8 @@ class IngestDispensariesJob implements ShouldQueue
             }
 
             $dispensary = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
+            $dispensary['licensee_name'] = $dispensary['license_name'] ?? null;
             unset($dispensary['']);
-
-            if (!isset($dispensary['licensee_name'])) {
-                continue;
-            }
-
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
@@ -66,7 +62,7 @@ class IngestDispensariesJob implements ShouldQueue
                     'license_expires_at' => Carbon::createFromFormat('m/d/Y', $dispensary['expiration_date']),
                     'official_license_type' => $dispensary['record_type'],
                     'license_type' => $this->filterLicenseType($dispensary['record_type']),
-                    'is_recreational' => $dispensary['record_type'],
+                    'is_recreational' => $this->isRecreationalLicense($dispensary['record_type']),
                 ]);
                 continue;
             }
