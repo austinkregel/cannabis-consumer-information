@@ -38,6 +38,10 @@ class IngestDispensariesJob implements ShouldQueue
             $dispensary = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
             unset($dispensary['']);
 
+            if (!isset($dispensary['licensee_name'])) {
+                continue;
+            }
+
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
