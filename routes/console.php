@@ -1,7 +1,7 @@
 <?php
 
 use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
-use App\Jobs\FetchMedicalDispensariesJob;
+use App\Jobs\IngestDispensariesJob;
 use App\Jobs\FetchRecalledProductsJob;
 use App\Jobs\FetchRecreationalDispensariesJob;
 use App\Jobs\GeocodeDispensariesJob;
@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
 Artisan::command('sync-recalls', function () {
-    dispatch_sync(new SyncMichiganRecallsJob);
-    dispatch_sync(new SyncAllRecalledProducts);
+    dispatch_sync(new IngestDispensariesJob(
+        storage_path('michigan-dispensary-and-license-list.csv')
+    ));
 })->describe('Sync recalls for all dispensaries');
 
 Artisan::command('make:service-user', function () {

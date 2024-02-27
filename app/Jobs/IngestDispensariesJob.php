@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Contracts\Repositories\SystemUserRepositoryContract;
-use App\Contracts\Services\GoogleMapsGeocodingService;
 use App\Contracts\Services\GoogleMapsGeocodingServiceContract;
 use App\Models\Dispensary;
 use Carbon\Carbon;
@@ -16,33 +15,19 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use League\Csv\Reader;
 
-class FetchRecreationalDispensariesJob implements ShouldQueue
+class IngestDispensariesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
+    public function __construct (public string $path) {}
     public function handle(GoogleMapsGeocodingServiceContract $service, SystemUserRepositoryContract $systemUserRepository)
     {
         $systemUser = $systemUserRepository->findOrFail();
         auth()->login($systemUser);
-        $reader = Reader::createFromPath(storage_path('recreation-dispensaries.csv'));
+
+        $reader = Reader::createFromPath($this->path);
 
         $headers = [];
-        info('Updating recreational dispensaries');
+        info('Updating dispensaries');
         foreach ($reader as $row) {
             if (empty($headers)) {
                 $headers = $row;
@@ -52,6 +37,7 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
 
             $dispensary = array_combine(array_map(fn($header)=> \Illuminate\Support\Str::snake($header), $headers), $row);
             unset($dispensary['']);
+
             $dispo = Dispensary::firstWhere('license_number', $dispensary['record_number']);
 
             if (!$dispo) {
@@ -60,47 +46,52 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
                         $geocode = $service->geocode($dispensary['address']);
                     } catch (\Throwable $e) {
                         $geocode = null;
-                    };
+                    }
                 }
-                info('Creating dispensary ' . $dispensary['license_name'] ?? null, [
+                info('Creating dispensary ' . $dispensary['licensee_name'], [
                     'record_number' => $dispensary['record_number'],
                     'address' => $dispensary['address'],
                 ]);
                 Dispensary::create([
-                    'name' => $dispensary['license_name'] ?? null,
+                    'name' => $dispensary['licensee_name'],
                     'latitude' => $geocode->latitude ?? null,
                     'longitude' => $geocode->longitude ?? null,
                     'license_number' => $dispensary['record_number'],
-                    'address' => empty($dispensary['address'])? null : $dispensary['address'],
-                    'is_active' => $dispensary['status'] !== 'Closed',
+                    'address' => $dispensary['address'],
+                    'is_active' => $dispensary['status'] === 'Active',
                     'license_expires_at' => Carbon::createFromFormat('m/d/Y', $dispensary['expiration_date']),
                     'official_license_type' => $dispensary['record_type'],
                     'license_type' => $this->filterLicenseType($dispensary['record_type']),
-                    'is_recreational' => true,
+                    'is_recreational' => $dispensary['record_type'],
                 ]);
                 continue;
             }
-            info('Updating dispensary ' . $dispensary['license_name'] ?? null, [
+            if (!empty($dispensary['address'])) {
+                try {
+                    $geocode = $service->geocode($dispensary['address']);
+                } catch (\Throwable $e) {
+                    $geocode = null;
+                }
+            }
+            info('Updating dispensary ' . $dispensary['licensee_name'], [
                 'record_number' => $dispensary['record_number'],
                 'address' => $dispensary['address'],
             ]);
 
             $dispo->update([
-                'name' => $dispensary['license_name'] ?? null,
+                'name' => $dispensary['licensee_name'],
+                'latitude' => $geocode->latitude ?? $dispo->latitude,
+                'longitude' => $geocode->longitude ?? $dispo->longitude,
                 'license_number' => $dispensary['record_number'],
-                'address' => empty($dispensary['address'])? null : $dispensary['address'],
-                'is_active' => $dispensary['status'] !== 'Closed',
+                'address' => $dispensary['address'],
+                'is_active' => $dispensary['status'] === 'Active',
                 'license_expires_at' => Carbon::createFromFormat('m/d/Y', $dispensary['expiration_date']),
                 'official_license_type' => $dispensary['record_type'],
                 'license_type' => $this->filterLicenseType($dispensary['record_type']),
-                'is_recreational' => true,
+                'is_recreational' => $this->isRecreationalLicense($dispensary['record_type']),
             ]);
-
-            $dispo = null;
-            $dispensary = null;
-         }
-
-         auth()->logout();
+        }
+        auth()->logout();
     }
 
     protected function filterLicenseType($licenseType)
@@ -112,12 +103,36 @@ class FetchRecreationalDispensariesJob implements ShouldQueue
             'Marihuana Event Organizer - License' => 'event',
             'Marihuana Retailer - License' => 'retailer',
             'Marihuana Secure Transporter - License' => 'transporter',
-            'Class A Marihuana Microbusiness - License', 'Marihuana Microbusiness - License' => 'microbusiness',
+            'Marihuana Microbusiness - License', 'Class A Marihuana Microbusiness - License' => 'microbusiness',
             'Temporary Marihuana Event - License' => 'temporary_event',
             'Designated Consumption Establishment - License' => 'consumption',
             'Marihuana Safety Compliance Facility - License' => 'compliance',
             'Sole Proprietor Registration - License' => 'sole_proprietor',
-            default => throw new \Exception('Unknown license type: '. $licenseType)
+            'Entity Prequalification' => 'prequalification',
+            'Class A Grower – License', 'Class B Grower – License', 'Grower License – Class C – 1500 Plants – License', 'Class C Grower – License' => 'grower',
+            'Processor - License' => 'processor',
+            'Provisioning Center - License' => 'provisioning',
+            'Individual Prequalification' => 'individual',
+            'Safety Compliance - License' => 'compliance',
+            'Secure Transporter - License' => 'transporter',
+            default => dd($licenseType)
+        };
+    }
+
+    protected function isRecreationalLicense($licenseType)
+    {
+        return match ($licenseType) {
+            'Entity Prequalification',
+            'Class A Grower – License',
+            'Class B Grower – License',
+            'Grower License – Class C – 1500 Plants – License',
+            'Class C Grower – License',
+            'Processor - License',
+            'Provisioning Center - License',
+            'Individual Prequalification',
+            'Safety Compliance - License',
+            'Secure Transporter - License' => false,
+            default => true,
         };
     }
 }
