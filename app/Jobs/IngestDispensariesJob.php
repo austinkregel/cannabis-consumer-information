@@ -43,6 +43,7 @@ class IngestDispensariesJob implements ShouldQueue
                  ->chunk(50)
                  ->map(fn($chunk) => new UpdateOrSyncDispensaryListJob($chunk->toArray()))
                  ->toArray())
+                ->allowFailures()
                 ->dispatch();
     }
 }
