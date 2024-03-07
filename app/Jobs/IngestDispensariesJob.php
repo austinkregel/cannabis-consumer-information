@@ -19,7 +19,6 @@ class IngestDispensariesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     public function __construct (public string $path) {
-        $this->onQueue('cannabis');
     }
     public function handle(GoogleMapsGeocodingServiceContract $service, SystemUserRepositoryContract $systemUserRepository)
     {

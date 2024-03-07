@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
 Artisan::command('sync-recalls', function () {
     dispatch(new IngestDispensariesJob(
         storage_path('michigan-dispensary-and-license-list.csv')
-    ))->onQueue('cannabis');
+    ));
 })->describe('Sync recalls for all dispensaries');
 
 Artisan::command('make:service-user', function () {
@@ -26,14 +26,6 @@ Artisan::command('make:service-user', function () {
         'name' => 'Michigan Cannabis Club',
         'email' => 'cannabisclub@kregel.email',
         'password' => bcrypt(Str::random(16)),
-    ]);
-})->describe('Sync recalls for all dispensaries');
-
-Artisan::command('make:admin-user', function () {
-    \App\Models\User::create([
-        'name' => 'Admin',
-        'email' => 'austinkregel@gmail.com',
-        'password' => bcrypt('000000'),
     ]);
 })->describe('Sync recalls for all dispensaries');
 
