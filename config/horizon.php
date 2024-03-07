@@ -167,7 +167,7 @@ return [
     'defaults' => [
         'cannabis-1' => [
             'connection' => 'redis',
-            'queue' => ['cannabis'],
+            'queue' => ['default', 'cannabis'],
             'balance' => 'auto',
             'maxProcesses' => 1,
             'maxTime' => 0,

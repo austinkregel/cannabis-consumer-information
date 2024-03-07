@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
 Artisan::command('sync-recalls', function () {
-    dispatch(new IngestDispensariesJob(
+    dispatch_sync(new IngestDispensariesJob(
         storage_path('michigan-dispensary-and-license-list.csv')
     ));
 })->describe('Sync recalls for all dispensaries');
