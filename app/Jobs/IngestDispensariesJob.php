@@ -41,7 +41,7 @@ class IngestDispensariesJob implements ShouldQueue
 
          Bus::batch(collect($data)
                  ->chunk(50)
-                 ->map(fn($chunk) => new UpdateOrSyncDispensaryListJob($chunk->toArray()))
+                 ->map(fn($chunk) => collect($chunk)->map(fn ($dispensary) => new UpdateOrSyncDispensaryListJob($dispensary)))
                  ->toArray())
                 ->allowFailures()
                 ->dispatch();
