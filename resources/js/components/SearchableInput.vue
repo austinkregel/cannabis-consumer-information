@@ -2,17 +2,17 @@
     <div class="group relative">
         <div class="absolute right-0 top-0 mt-2 mr-2">
             <button role="button" @click.prevent="() => clearValue()">
-                <XIcon class="w-6 h-6 fill-current dark:text-slate-200" /> 
+                <XIcon class="w-6 h-6 fill-current dark:text-slate-200" />
             </button>
         </div>
-        <input :value="search" @input="e => doSearch(e.target.value)" type="text" class="dark:text-slate-200 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-slate-300 dark:border-slate-500 dark:bg-slate-500 rounded-md"/>
+        <input :value="search" @input="e => doSearch(e.target.value)" type="text" class="dark:text-slate-200 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:border-slate-300 dark:border-slate-500 dark:bg-slate-500 rounded-md"/>
         <div v-if="optionsOpen" class="dark:bg-slate-500 bg-white mt-2 rounded shadow">
             <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-600 overflow-y-scroll" style="max-height: 21rem;">
                 <li v-for="person in options" :key="person.value" class="py-4">
                     <button class="ml-3 flex flex-col" role="button" @click.prevent="() => updateValue(person)">
                         <slot name="option" :option="person">
                             <div class="flex flex-col gap-1">
-                                <p class="text-sm font-medium text-slate-900 dark:text-slate-50 flex items-center gap-2">
+                                <p class="font-medium text-slate-900 dark:text-slate-50 flex items-center gap-2">
                                     <span>{{ person }}</span>
                                 </p>
                             </div>

@@ -3,6 +3,7 @@
 use App\Models\Dispensary;
 use App\Models\Recall;
 use App\Models\Strain;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
@@ -50,7 +51,7 @@ Route::get('/dispensaries', function () {
         });
     }
     $query->where('is_recreational', request('is_recreational', 'true') === "true");
-    
+
     $query->whereIn('license_type', [
         'retailer',
         'provisioning',
@@ -167,12 +168,31 @@ Route::get('/recall/{recall:id}', function (App\Models\Recall $recall) {
     $recall = Recall::with([
         'dispensaries' => function ($query) {
             $query->withCount('recalls');
-        }, 
+        },
     ])
     ->withCount('products')
     ->find($recall->id);
 
     return view('recall', compact('recall'));
+});
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(\Laravel\Horizon\Http\Middleware\Authenticate::class)
+    ->get('/map', fn () => view("map", [
+        'zip' => (object) [
+            'lat' => 44.5,
+            'lng' => -86,
+        ]
+    ]));
+
+Route::middleware('auth')->group(function () {
+    Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

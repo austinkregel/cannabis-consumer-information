@@ -1,3 +1,8 @@
+import './bootstrap';
+//
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
 require('./bootstrap');
 import { createApp } from 'vue'
 import store from './store'
@@ -19,3 +24,4 @@ store.dispatch('fetchRecalls');
 app.mount('#app');
 
 window.app = app;
+Alpine.start();

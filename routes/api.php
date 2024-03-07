@@ -31,7 +31,19 @@ Route::post('search', function (Request $request) {
     return Recall::with(['products' => $where])->whereHas('products', $where)->get();
 });
 Route::get('recalls', function (Request $request) {
-    return Recall::withCount('products', 'dispensaries')->get();
+    return Recall::query()
+        ->withCount('products', 'dispensaries')
+        ->orderByDesc('published_at')
+        ->get();
+});
+Route::get('licensed-locations', function (Request $request) {
+    return \Spatie\QueryBuilder\QueryBuilder::for(Dispensary::class)
+        ->allowedFilters([
+            'name', 'address', 'url', 'email'
+        ])
+        ->whereNotNull('latitude')
+        ->whereNotNull('longitude')
+        ->get();
 });
 
 Route::middleware('auth:sanctum')->post('/like', function (Request $request) {
@@ -44,7 +56,7 @@ Route::middleware('auth:sanctum')->post('/like', function (Request $request) {
     ]);
     $type = $request->get('likeable_type');
     $like = $type::find($request->get('likeable_id'));
-    if ($request->user()->hasLiked($like)) { 
+    if ($request->user()->hasLiked($like)) {
         $request->user()->unlike($like);
         return ;
     }
@@ -65,7 +77,7 @@ Route::middleware('auth:sanctum')->post('/follow', function (Request $request) {
     $type = $request->get('followable_type');
     $follow = $type::find($request->get('followable_id'));
 
-    if ($request->user()->isFollowing($follow)) { 
+    if ($request->user()->isFollowing($follow)) {
         $request->user()->unfollow($follow);
         return ;
     }
@@ -85,8 +97,8 @@ Route::middleware('auth:sanctum')->post('/favorite', function (Request $request)
     ]);
     $type = $request->get('favoriteable_type');
     $favorite = $type::find($request->get('favoriteable_id'));
-    
-    if ($request->user()->hasFavorited($favorite)) { 
+
+    if ($request->user()->hasFavorited($favorite)) {
         $request->user()->unfavorite($favorite);
         return;
     }
@@ -123,7 +135,7 @@ Route::middleware('auth:sanctum')->get('/feed', function (Request $request) {
             });
         }
 
-        $query->orWhere(function ($query) { 
+        $query->orWhere(function ($query) {
             $query->where('causer_type', 'App\Models\User')
                 ->where('causer_id', request()->user()->id);
         });
@@ -134,7 +146,7 @@ Route::middleware('auth:sanctum')->get('/feed', function (Request $request) {
 });
 Route::middleware('auth:sanctum')->get('/facilities', function (Request $request) {
     $query = Dispensary::query();
-    
+
     if ($request->has('query')) {
         $query->where(function ($query) use ($request) {
             $query->where('name', 'like', '%' . $request->get('query') . '%')
@@ -154,13 +166,13 @@ Route::middleware('auth:sanctum')->get('/facilities', function (Request $request
             });
         }, $request->get('filter'), array_keys($request->get('filter')));
     }
-    
+
     return $query->paginate(request('limit', 100), ['*'], 'page', request('page', 1));
 });
 
 Route::middleware('auth:sanctum')->get('/strains', function (Request $request) {
     $query = Strain::query();
-    
+
     if ($request->has('query')) {
         $query->where(function ($query) use ($request) {
             $query->where('name', 'like', '%' . $request->get('query') . '%');
@@ -179,6 +191,6 @@ Route::middleware('auth:sanctum')->get('/strains', function (Request $request) {
             });
         }, $request->get('filter'), array_keys($request->get('filter')));
     }
-    
+
     return $query->paginate(request('limit', 100), ['*'], 'page', request('page', 1));
 });

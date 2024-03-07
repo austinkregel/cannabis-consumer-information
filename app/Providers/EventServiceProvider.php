@@ -27,13 +27,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        Liked::class => [],
+        Liked::class => [
+//            AddToUsersSubscriptions
+        ],
         Unliked::class => [],
         Followed::class => [],
         Unfollowed::class => [],
         Favorited::class => [],
         Unfavorited::class => [],
-        
+
         DispensaryHasBeenInvolvedInRecall::class => [
             LogActivityListener::class,
         ],

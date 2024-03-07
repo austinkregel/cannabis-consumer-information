@@ -1,10 +1,10 @@
-<template> 
+<template>
       <div class="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 mt-6">
         <!-- Replace with your content -->
         <recall-search />
-        <div v-if="$store.getters?.recalls?.length > 0" class="grid grid-cols-4 gap-4 dark:bg-slate-700 overflow-hidden shadow-sm sm:rounded-lg py-4 px-4 mt-6">
+        <div v-if="$store.getters?.recalls?.length > 0" class="grid grid-cols-4 gap-4 dark:bg-slate-800 overflow-hidden shadow-sm sm:rounded-lg py-4 px-4 mt-6">
             <template v-for="recall in $store.getters.recalls" :key="recall.id">
-                <div class="text-slate-900 dark:bg-slate-600 dark:text-white py-2 px-4 rounded" >
+                <div class="text-slate-900 dark:bg-slate-900 dark:text-white py-2 px-4 rounded" >
                     <div class="font-bold">
                         <a target="_blank" :href="recall.mra_public_notice_url" v-text="recall.name"></a>
                     </div>
@@ -18,7 +18,7 @@
 
 
         <div class="mt-8">
-            <div class="rounded-lg bg-slate-200 dark:bg-slate-600 overflow-hidden shadow divide-y divide-slate-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
+            <div class="rounded-lg bg-slate-200 dark:bg-slate-800 overflow-hidden shadow divide-y divide-slate-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
               <div v-for="(action, actionIdx) in actions" :key="action.title" :class="[actionIdx === 0 ? 'rounded-tl-lg rounded-tr-lg sm:rounded-tr-none' : '', actionIdx === 1 ? 'sm:rounded-tr-lg' : '', actionIdx === actions.length - 2 ? 'sm:rounded-bl-lg' : '', actionIdx === actions.length - 1 ? 'rounded-bl-lg rounded-br-lg sm:rounded-bl-none' : '', 'relative group bg-white dark:bg-slate-700 p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500']">
                 <div>
                   <span :class="[action.iconBackground, action.iconForeground, 'rounded-lg inline-flex p-3 ring-4 ring-white dark:ring-slate-600']">
@@ -33,7 +33,7 @@
                       {{ action.title }}
                     </a>
                   </h3>
-                  <p class="mt-2 text-sm text-slate-500 dark:text-slate-50">{{action.description}}</p>
+                  <p class="mt-2 text-slate-500 dark:text-slate-50">{{action.description}}</p>
                 </div>
                 <span class="pointer-events-none absolute top-6 right-6 text-slate-300 group-hover:text-slate-400" aria-hidden="true">
                   <ChevronRightIcon v-if="!action.href.startsWith('http')" class="h-7 w-7" />
@@ -50,11 +50,11 @@
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { SearchIcon } from '@heroicons/vue/solid'
-import { 
+import {
   BellIcon,
-  MenuIcon, 
-  XIcon, 
-  VideoCameraIcon, 
+  MenuIcon,
+  XIcon,
+  VideoCameraIcon,
   QrcodeIcon,
   AcademicCapIcon,
   BadgeCheckIcon,
@@ -122,10 +122,10 @@ export default {
                 iconForeground: 'text-sky-700 dark:text-sky-200',
                 iconBackground: 'bg-sky-50 dark:bg-sky-700',
               },
-              { 
-                title: 'Find a Cannabis Establishment', 
+              {
+                title: 'Find a Cannabis Establishment',
                 description: 'Michigan publishes the licenses, names, and addresses of all recreational and medical cannabis establishments in the state.',
-                href: '/dispensaries', 
+                href: '/dispensaries',
                 icon: CashIcon,
                 iconForeground: 'text-yellow-700 dark:text-yellow-200',
                 iconBackground: 'bg-yellow-50 dark:bg-yellow-700',
@@ -148,6 +148,11 @@ export default {
               },
             ]
 
+        }
+    },
+    methods: {
+        date(datestring) {
+            return dayjs(datestring).format('MMMM JJ, YYYY');
         }
     }
 }

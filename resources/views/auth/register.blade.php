@@ -53,7 +53,7 @@
         </form>
         <x-slot:footer>
             <div class="w-full flex items-center justify-center mt-6">
-                <a href="/login" class="text-sm text-blue-500 hover:text-blue-800 font-bold dark:text-slate-200 dark:hover:text-slate-300">
+                <a href="/login" class="text-blue-500 hover:text-blue-800 font-bold dark:text-slate-200 dark:hover:text-slate-300">
                     Already have an account?
                 </a>
             </div>

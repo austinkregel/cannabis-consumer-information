@@ -31,11 +31,18 @@ class Dispensary extends Model
         'longitude',
     ];
 
+    protected $hidden = [
+        'email',
+        'url',
+        'user_id',
+        'phone_number'
+    ];
+
     public $dates = [
         'license_expires_at',
     ];
 
-    public function getActivitylogOptions(): LogOptions 
+    public function getActivitylogOptions(): LogOptions
     {
         $config = new LogOptions;
 

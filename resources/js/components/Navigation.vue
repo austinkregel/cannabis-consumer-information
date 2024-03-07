@@ -12,7 +12,7 @@
                 </a>
                 <div class="hidden md:block">
                   <div class="ml-10 flex items-baseline space-x-4">
-                    <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-slate-900 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
+                    <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-slate-900 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white', 'px-3 py-2 rounded-md font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
                   </div>
                 </div>
               </div>
@@ -23,23 +23,29 @@
                       <SunIcon v-if="!darkMode" class="h-6 w-6" aria-hidden="true" />
                       <MoonIcon v-else class="h-6 w-6" aria-hidden="true" />
                   </button>
-
                   <!-- Profile dropdown -->
-                  <Menu as="div" class="mx-3 relative" v-if="user">
+                  <Menu as="div" class="mx-3 relative z-20" v-if="user">
                     <div >
-                      <MenuButton class="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <MenuButton class="bg-white flex rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span class="sr-only">Open user menu</span>
                         <img class="h-8 w-8 rounded-full" :src="user.image_url" alt="" />
                       </MenuButton>
                     </div>
                     <transition enter-active-class="transition ease-out duration-200" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
                       <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-slate-700 ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                          <a :href="item.href" :class="[active ? 'bg-slate-100 dark:bg-slate-600' : '', 'block px-4 py-2 text-slate-700 dark:text-slate-300']">{{ item.name }}</a>
+                        <MenuItem v-for="item in userNavigation" v-if="item?.view ?? true " :key="item?.name" v-slot="{ active }">
+                          <a :href="item?.href" :class="[active ? 'bg-slate-100 dark:bg-slate-800' : '', 'block px-4 py-2 text-slate-700 dark:text-slate-300']">
+                              <component
+                                  v-if="item.icon"
+                                  :is="item.icon"
+                                  :class="['flex-shrink-0 -ml-1 mr-3 h-6 w-6']" aria-hidden="true" />
+
+                              {{ item.name }}
+                          </a>
                         </MenuItem>
                         <MenuItem>
                             <form method="post" action="/logout" id="logout">
-                                <button @click="logoutUser" type="button" class="w-full dark:hover:bg-slate-600 flex flex-wrap items-center gap-2 py-1 px-3 text-slate-400 dark:text-slate-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
+                                <button @click="logoutUser" type="button" class="w-full dark:hover:bg-slate-800 flex flex-wrap items-center gap-2 py-1 px-3 text-slate-400 dark:text-slate-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
                                     <span class="sr-only">Logout</span>
                                     <LogoutIcon class="h-4 w-4" aria-hidden="true" />
                                     <span>Logout</span>
@@ -49,7 +55,7 @@
                       </MenuItems>
                     </transition>
                   </Menu>
-                  <a v-if="!user" href="/register" class="block px-4 py-2 text-slate-700 dark:text-slate-300 dark:bg-slate-600 bg-blue-600 rounded-lg py-1 px-2 mx-2">Register</a>
+                  <a v-if="!user" href="/register" class="block px-4 py-2 text-slate-700 dark:text-slate-300 dark:bg-slate-800 bg-blue-600 rounded-lg py-1 px-2 mx-2">Register</a>
                   <a v-if="!user" href="/login" class="block px-4 py-2 text-slate-700 dark:text-slate-300 border dark:border-slate-600 rounded-lg py-1 px-2">Login</a>
 
 
@@ -78,6 +84,7 @@
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, XIcon, MenuIcon, SunIcon, MoonIcon, LogoutIcon } from '@heroicons/vue/outline'
+import Horizonicon from "./Horizonicon.vue";
 export default {
     components: {
         Disclosure,
@@ -95,19 +102,21 @@ export default {
         LogoutIcon,
     },
     name: 'Navigation',
-    props: ['user'],
+    props: ['user', 'viewHorizon'],
     data () {
         return {
             open: false,
             navigation: [
-                { name: 'Recalls', href: '/', current: window.location.pathname === '/' },
-                { name: 'Dispensaries', href: '/dispensaries', current: window.location.pathname === '/dispensaries' },
-                { name: 'Testers', href: '/testers', current: window.location.pathname === '/testers' },
-                { name: 'Growers', href: '/growers', current: window.location.pathname === '/growers' },
-                { name: 'Strains', href: '/strains', current: window.location.pathname === '/strains' },
+                { name: 'Recalls', href: '/', current: window.location.pathname === '/' , view: true},
+                { name: 'Dispensaries', href: '/dispensaries', current: window.location.pathname === '/dispensaries' , view: true},
+                { name: 'Testers', href: '/testers', current: window.location.pathname === '/testers' , view: true},
+                { name: 'Growers', href: '/growers', current: window.location.pathname === '/growers' , view: true},
+                { name: 'Strains', href: '/strains', current: window.location.pathname === '/strains' , view: !!this.user},
             ],
             userNavigation:[
-              { name: 'Settings', href: '/settings' },
+            { name: 'Settings', href: '/settings', view: true },
+                { view: this.viewHorizon, name: 'Horizon', href: '/horizon', icon: Horizonicon },
+                { view: this.viewHorizon, name: 'Map', href: '/map', icon: Horizonicon },
             ],
             darkMode: JSON.parse(localStorage.getItem('dark_mode') ?? 'true'),
         }
