@@ -102,6 +102,7 @@ public function handle(GoogleMapsGeocodingServiceContract $service)
             'Individual Prequalification' => 'individual',
             'Safety Compliance - License' => 'compliance',
             'Secure Transporter - License' => 'transporter',
+            "Educational Research License - License" => 'educational',
             default => dd($licenseType)
         };
     }
