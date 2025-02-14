@@ -17,7 +17,7 @@ class GeocodeDispensariesJob
 
         info('Geocoding ' . $dispensaries->count() . ' dispensaries');
         foreach ($dispensaries as $dispensary) {
-            try { 
+            try {
                 $geocode = $geocoding->geocode($dispensary['address']);
                 $dispensary->update([
                     'latitude' => $geocode->latitude ?? null,

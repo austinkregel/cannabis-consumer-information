@@ -165,9 +165,9 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
+        'cannabis-1' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => ['default', 'cannabis'],
             'balance' => 'auto',
             'maxProcesses' => 1,
             'maxTime' => 0,
@@ -181,7 +181,7 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
+            'cannabis-1' => [
                 'maxProcesses' => 3,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
@@ -189,7 +189,7 @@ return [
         ],
 
         'local' => [
-            'supervisor-1' => [
+            'cannabis-1' => [
                 'maxProcesses' => 3,
             ],
         ],

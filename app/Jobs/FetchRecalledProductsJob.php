@@ -23,6 +23,7 @@ class FetchRecalledProductsJob implements ShouldQueue
 
     public function __construct(public Recall $recall)
     {
+        $this->onQueue('cannabis');
     }
 
     public function handle(RecallPdfExtractionServiceContract $pdfExtractionService, SystemUserRepositoryContract $systemUserRepository)

@@ -18,10 +18,6 @@
                 <favorite-button v-if="$store.getters.user?.id" type="App\Models\Strain" :follow="item" class="text-yellow-600 dark:text-yellow-400"></favorite-button>
                 <follow-button v-if="$store.getters.user?.id" type="App\Models\Strain" :follow="item" class="text-green-600 dark:text-green-400"></follow-button>
                 <like-button v-if="$store.getters.user?.id" type="App\Models\Strain" :follow="item" class="text-blue-600 dark:text-blue-400"></like-button>
-         
-                <a :href="'/dispensary/' + item.license_number" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-slate-300 dark:border-slate-600 text-sm leading-5 font-medium rounded-full text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
-                  View
-                </a>
               </div>
             </div>
 

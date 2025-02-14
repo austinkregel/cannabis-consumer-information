@@ -1,7 +1,7 @@
 <?php
 
 use App\Contracts\Services\Pdf\RecallPdfExtractionServiceContract;
-use App\Jobs\FetchMedicalDispensariesJob;
+use App\Jobs\IngestDispensariesJob;
 use App\Jobs\FetchRecalledProductsJob;
 use App\Jobs\FetchRecreationalDispensariesJob;
 use App\Jobs\GeocodeDispensariesJob;
@@ -16,8 +16,17 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
 Artisan::command('sync-recalls', function () {
-    dispatch_sync(new SyncMichiganRecallsJob);
-    dispatch_sync(new SyncAllRecalledProducts);
+    dispatch_sync(new IngestDispensariesJob(
+        storage_path('michigan-dispensary-and-license-list.csv')
+    ));
+})->describe('Sync recalls for all dispensaries');
+
+Artisan::command('make:service-user', function () {
+    \App\Models\User::create([
+        'name' => 'Michigan Cannabis Club',
+        'email' => 'cannabisclub@kregel.email',
+        'password' => bcrypt(Str::random(16)),
+    ]);
 })->describe('Sync recalls for all dispensaries');
 
 Artisan::command('test-leafly', function () {
@@ -30,7 +39,7 @@ Artisan::command('test-leafly', function () {
 
         foreach ($paginator->items() as $strain) {
             $localStrain = Strain::firstWhere('name', $strain->name);
-    
+
             if (empty($localStrain)) {
                 $localStrain = Strain::create([
                     'name' => $strain->name,
@@ -51,7 +60,7 @@ Artisan::command('test-leafly', function () {
                 'aprox_thc' => $thcAvg,
                 'aprox_cbd' => $cbdAvg,
             ]);
-    
+
             $this->info(sprintf('%s (%s)', $localStrain->name, $localStrain->slug));
         }
     } while ($paginator->hasMorePages());
@@ -68,7 +77,7 @@ Artisan::command('test', function () {
     $this->info(sprintf('%d new strains', $diff->count()));
 
     foreach ($diff as $strain) {
-        $localStrain = Strain::firstWhere('name', $strain);
+        $localStrain = Strain::firstWhere('slug', Str::slug($strain));
 
         if (empty($localStrain)) {
             $localStrain = Strain::create([
@@ -86,14 +95,14 @@ Artisan::command('geocode', function () {
 });
 
 Artisan::command('seed-everything', function() {
-    $this->info('Seeding everything');
-    dispatch(new FetchMedicalDispensariesJob);
-    $this->info('Finished Medical, moving to recreational');
-    dispatch(new FetchRecreationalDispensariesJob);
+//    $this->info('Seeding everything');
+//    dispatch_sync(new FetchMedicalDispensariesJob);
+//    $this->info('Finished Medical, moving to recreational');
+//    dispatch_sync(new FetchRecreationalDispensariesJob);
     $this->info('Syncing recall jobs');
-    dispatch(new SyncMichiganRecallsJob);
+    dispatch_sync(new SyncMichiganRecallsJob);
     $this->info('Parsing the PDFs');
-    dispatch(new SyncAllRecalledProducts);
+    dispatch_sync(new SyncAllRecalledProducts);
     $this->info('Geocoding missed dispensaries');
     dispatch_sync(new GeocodeDispensariesJob);
     $this->info('Done');

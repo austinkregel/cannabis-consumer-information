@@ -17,6 +17,7 @@ class SyncAllRecalledProducts implements ShouldQueue
 
     public function __construct()
     {
+        $this->onQueue('cannabis');
     }
 
     public function handle(Dispatcher $dispatcher)
